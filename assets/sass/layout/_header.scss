@@ -1,0 +1,27 @@
+.header {
+  background-color: #e3d7ca;
+  .navbar {
+    .bars-icon {
+      border: solid 1px #3d2000;
+      padding: 4px;
+      .line {
+        background-color: #3d2000;
+        width: 24px;
+        height: 2px;
+        margin: 4px 4px;
+      }
+    }
+    &-nav {
+      .nav-link {
+        font-size: 1.25rem;
+        color: #4e5f6a;
+      }
+      .register {
+        color: #096772;
+      }
+      .active {
+        color: #3d2000;
+      }
+    }
+  }
+}

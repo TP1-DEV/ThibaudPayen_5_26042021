@@ -1,0 +1,20 @@
+
+.card {
+    .card-product {
+        height: 300px;
+    }
+    .btn-color {
+        background-color: #b69391;
+        color: #3d2000;
+        border-color: #3d2000;
+    }
+}
+@media screen and (min-width: 768px) {
+   .card {
+    .card-product {
+        height: 500px;
+        width: 50%;
+        border-radius: 1rem 0 0 1rem;
+    }
+} 
+}
