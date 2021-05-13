@@ -82,10 +82,20 @@ a:hover {
 .card .card-product {
   height: 300px; }
 
-.card .btn-color {
+.card .label-color, .card .btn-color {
   background-color: #b69391;
   color: #3d2000;
-  border-color: #3d2000; }
+  border: none; }
+
+.card .select-color {
+  background-color: #f1ebe4;
+  color: #3d2000;
+  border: none; }
+
+.card .input-group {
+  width: auto; }
+  .card .input-group select {
+    border-radius: 0 0.25rem 0.25rem 0; }
 
 @media screen and (min-width: 768px) {
   .card .card-product {

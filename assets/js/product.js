@@ -1,12 +1,13 @@
 // MAIN FUNCTION
 const main = async () => {
-  const url = "http://localhost:3000/api/teddies/" + getSearchParams("id")
+  const url = "http://localhost:3000/api/teddies/" + getSearchParams("id");
   const products = await getData(url);
-  addProductsCard(products);
+  addItemsCards(products);
+  addToCart("addToCart", products);
 };
 
 // ADD PRODUCTS TO DOCUMENT
-const addProductsCard = (products) => {
+const addItemsCards = (products) => {
   const mainProduct = document.getElementById("main-product");
 
   const card = document.createElement("div");
@@ -19,7 +20,7 @@ const addProductsCard = (products) => {
 
   const box = document.createElement("div");
   article.appendChild(box);
-  box.classList.add("card", "h-100", "flex-md-row", "shadow");
+  box.classList.add("card", "flex-md-row", "shadow");
 
   const img = document.createElement("img");
   box.appendChild(img);
@@ -44,26 +45,37 @@ const addProductsCard = (products) => {
   body.appendChild(footer);
   footer.classList.add("card-price", "d-flex", "justify-content-between");
 
-  const dropDown = document.createElement("div")
-  footer.appendChild(dropDown)
-  dropDown.classList.add("dropdown")
+  const inputGroup = document.createElement("div");
+  footer.appendChild(inputGroup);
+  inputGroup.classList.add("input-group", "mb-4");
 
-  const buttonColorList = document.createElement("div");
-  dropDown.appendChild(buttonColorList);
-  buttonColorList.classList.add("btn", "btn-outline-secondary", "dropdown-toggle", "btn-color", "font-weight-bold");
-  setAttributes(buttonColorList, {"id": "dropdownMenuButton", "type": "button", "data-toggle": "dropdown"})
-  buttonColorList.textContent = "Coloris"
+  const inputGroupPrepend = document.createElement("div");
+  inputGroup.appendChild(inputGroupPrepend);
+  inputGroupPrepend.classList.add("input-group-prepend");
 
-  const menu = document.createElement("div");
-  dropDown.appendChild(menu);
-  menu.classList.add("dropdown-menu");
+  const label = document.createElement("label");
+  inputGroupPrepend.appendChild(label);
+  label.classList.add("input-group-text", "label-color", "font-weight-bold");
+  label.setAttribute("for", "inputGroupSelect01");
+  label.textContent = "Couleurs";
+
+  const customSelect = document.createElement("select");
+  inputGroup.appendChild(customSelect);
+  customSelect.setAttribute("id", "inputGroupSelect01");
+  customSelect.classList.add("select-color", "font-weight-bold");
 
   const colors = products.colors;
+  const options = document.createElement("option");
+  customSelect.appendChild(options);
+  options.classList.add("font-weight-bold");
+  options.setAttribute("value", "selected");
+  options.textContent = "Faites votre choix";
   for (let color of colors) {
-    const listMenu = document.createElement("a");
-    menu.appendChild(listMenu);
-    listMenu.classList.add("dropdown-item");
-    listMenu.textContent = color;
+    const options = document.createElement("option");
+    customSelect.appendChild(options);
+    options.classList.add("font-weight-bold");
+    options.setAttribute("value", color);
+    options.textContent = color;
   }
 
   const price = document.createElement("p");
@@ -74,7 +86,15 @@ const addProductsCard = (products) => {
   const button = document.createElement("button");
   body.appendChild(button);
   button.classList.add("btn", "btn-light", "mt-4", "font-weight-bold", "btn-color");
+  button.setAttribute("id", "addToCart");
   button.textContent = "Ajouter au panier";
+};
+
+const addToCart = (element, items) => {
+  document.getElementById(element).addEventListener("click", () => {
+    let cart = [optionSelected("inputGroupSelect01"),items._id];
+    localStorage.setItem("cart", JSON.stringify(cart));
+  });
 };
 
 // ON LOAD

@@ -1,4 +1,4 @@
-// FETCH DATA
+// GET DATA
 const getData = async (url) => {
   try {
     const response = await fetch(url);
@@ -36,6 +36,11 @@ const formatPrice = (price, taxes = false) => {
   return numberWithSpaces(formatedPrice);
 };
 
+// SPACING NUMBERS
+function numberWithSpaces(variable) {
+  return variable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 // SET MULTIPLE ATTRIBUTES
 const setAttributes = (element, attributes) => {
   for (let key in attributes ) {
@@ -43,7 +48,9 @@ const setAttributes = (element, attributes) => {
   }
 }
 
-// SPACING NUMBERS
-function numberWithSpaces(variable) {
-  return variable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
+// OPTION SELECTED
+const optionSelected = (selectId) => {
+  const selected = document.getElementById(selectId);
+  let result = selected.options[selected.selectedIndex].value;
+  return result;
+};

@@ -2,11 +2,11 @@
 const main = async () => {
   const url = "http://localhost:3000/api/teddies/"
   const products = await getData(url);
-  addProductCard(products);
+  addItemsCards(products);
 };
 
 // ADD PRODUCTS TO DOCUMENT
-function addProductCard(products) {
+function addItemsCards(products) {
   const cardSection = document.getElementById("card-section");
   const card = document.createElement("div")
   cardSection.appendChild(card)
@@ -23,7 +23,7 @@ function addProductCard(products) {
 
     const box = document.createElement("div");
     link.appendChild(box);
-    box.classList.add("card", "h-100", "shadow");
+    box.classList.add("card", "shadow");
 
     const img = document.createElement("img");
     box.appendChild(img);
