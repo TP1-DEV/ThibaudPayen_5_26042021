@@ -102,3 +102,15 @@ a:hover {
     height: 500px;
     width: 50%;
     border-radius: 1rem 0 0 1rem; } }
+
+.quantity input {
+  width: 25px;
+  height: 25px; }
+
+.quantity span {
+  display: block; }
+
+.btn-color {
+  background-color: #b69391;
+  color: #3d2000;
+  border: none; }

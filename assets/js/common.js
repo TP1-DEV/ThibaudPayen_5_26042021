@@ -14,9 +14,9 @@ const getData = async (url) => {
 };
 
 // GET URLSEARCHPARAMS
-const getSearchParams = (variable) => {
+const getSearchParams = (a) => {
   const searchParams = new URLSearchParams(document.location.search);
-  return searchParams.get(variable);
+  return searchParams.get(a);
 };
 
 // FORMATING PRICE
@@ -37,8 +37,8 @@ const formatPrice = (price, taxes = false) => {
 };
 
 // SPACING NUMBERS
-function numberWithSpaces(variable) {
-  return variable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+function numberWithSpaces(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 // SET MULTIPLE ATTRIBUTES
@@ -48,9 +48,41 @@ const setAttributes = (element, attributes) => {
   }
 }
 
-// OPTION SELECTED
-const optionSelected = (selectId) => {
-  const selected = document.getElementById(selectId);
-  let result = selected.options[selected.selectedIndex].value;
-  return result;
-};
+class Cart {
+  _items;
+  constructor() {
+    const cartStorage = localStorage.getItem("cart")
+    this._items = (cartStorage != null) ? JSON.parse(cartStorage) : []
+  }
+  addItem(id, color) {
+    const cartItem = {
+      id: id,
+      color: color
+    }
+    this._items.push(cartItem);
+    localStorage.setItem("cart", JSON.stringify(this._items));
+  }
+  getItems() {
+    return this._items
+  }
+}
+
+/* // SET QUANTITY
+function increaseCount(a, b) {
+  var input = b.previousElementSibling;
+  var value = parseInt(input.value, 10);
+  value = isNaN(value) ? 0 : value;
+  value++;
+  input.value = value;
+}
+
+function decreaseCount(a, b) {
+  var input = b.nextElementSibling;
+  var value = parseInt(input.value, 10);
+  if (value > 1) {
+    value = isNaN(value) ? 0 : value;
+    value--;
+    input.value = value;
+  }
+}
+ */

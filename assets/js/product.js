@@ -3,7 +3,7 @@ const main = async () => {
   const url = "http://localhost:3000/api/teddies/" + getSearchParams("id");
   const products = await getData(url);
   addItemsCards(products);
-  addToCart("addToCart", products);
+  addToCart(products);
 };
 
 // ADD PRODUCTS TO DOCUMENT
@@ -90,10 +90,12 @@ const addItemsCards = (products) => {
   button.textContent = "Ajouter au panier";
 };
 
-const addToCart = (element, items) => {
-  document.getElementById(element).addEventListener("click", () => {
-    let cart = [optionSelected("inputGroupSelect01"),items._id];
-    localStorage.setItem("cart", JSON.stringify(cart));
+// ADD PRODUCT TO CART
+const addToCart = (product) => {
+  document.getElementById("addToCart").addEventListener("click", () => {
+    const cart = new Cart()
+    let selectedOption = document.getElementById("inputGroupSelect01").value;
+    cart.addItem(product._id, selectedOption)
   });
 };
 

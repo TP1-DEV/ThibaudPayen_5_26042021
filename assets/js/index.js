@@ -6,7 +6,7 @@ const main = async () => {
 };
 
 // ADD PRODUCTS TO DOCUMENT
-function addItemsCards(products) {
+const addItemsCards = (products) => {
   const cardSection = document.getElementById("card-section");
   const card = document.createElement("div")
   cardSection.appendChild(card)
