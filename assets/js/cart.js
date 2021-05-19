@@ -6,7 +6,9 @@ const main = async () => {
 const addItemsCards = async () => {
   const cart = new Cart();
   const url = "http://localhost:3000/api/teddies/";
+
   const items = document.getElementById("items");
+
   for (let item of cart.getItems()) {
     const product = await getData(url + item.id);
 
@@ -25,7 +27,7 @@ const addItemsCards = async () => {
 
     const desc = document.createElement("div");
     box.appendChild(desc);
-    desc.classList.add("col-4");
+    desc.classList.add("col-4", "align-self-center");
 
     const name = document.createElement("p");
     desc.appendChild(name);
@@ -39,7 +41,7 @@ const addItemsCards = async () => {
 
     const quantity = document.createElement("div");
     box.appendChild(quantity);
-    quantity.classList.add("col", "d-flex", "justify-content-center", "quantity");
+    quantity.classList.add("col", "d-flex", "justify-content-center", "align-items-center", "quantity");
 
     const down = document.createElement("span");
     quantity.appendChild(down);
@@ -50,21 +52,58 @@ const addItemsCards = async () => {
     quantity.appendChild(quantityNumber);
     quantityNumber.classList.add("text-center", "mx-1", "font-weight-bold");
     quantityNumber.setAttribute("type", "text");
-    quantityNumber.setAttribute("value", "1");
+    quantityNumber.setAttribute("value", item.quantity);
 
     const up = document.createElement("span");
     quantity.appendChild(up);
     up.classList.add("up", "font-weight-bold");
     up.textContent = "+";
 
+    // SET QUANTITY
+    up.addEventListener("click", () => {
+      increaseCount(item);
+    });
+    down.addEventListener("click", () => {
+      decreaseCount(item);
+    });
+    let increaseCount = (item) => {
+      const input = up.previousElementSibling;
+      let value = parseInt(input.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      cart.increaseItem(item.id, item.color);
+      input.value = value;
+      price.textContent = formatPrice(cart.sum(item));
+    };
+    let decreaseCount = (item) => {
+      const input = down.nextElementSibling;
+      let value = parseInt(input.value, 10);
+      if (value > 1) {
+        value = isNaN(value) ? 0 : value;
+        value--;
+        cart.decreaseItem(item.id, item.color);
+        input.value = value;
+        price.textContent = formatPrice(cart.sum(item));
+      } else {
+        cart.removeItem(item.id, item.color);
+        article.remove();
+      }
+    };
+
     const price = document.createElement("div");
     box.appendChild(price);
-    price.classList.add("col", "font-weight-bold");
-    price.textContent = formatPrice(product.price);
+    price.classList.add("col", "font-weight-bold", "text-center", "align-self-center");
+    price.textContent = formatPrice(cart.sum(item));
 
     const remove = document.createElement("div");
     box.appendChild(remove);
-    remove.classList.add("col");
+    remove.classList.add("col", "text-center", "align-self-center");
+
+    // REMOVE PRODUCT FROM CART
+    remove.addEventListener("click", () => {
+      cart.removeItem(item.id, item.color);
+      article.remove();
+    });
 
     const iconRemove = document.createElement("i");
     remove.appendChild(iconRemove);
@@ -82,7 +121,7 @@ const addItemsCards = async () => {
   const textBackArrow = document.createElement("span");
   backToHome.appendChild(textBackArrow);
   textBackArrow.classList.add("mx-2", "font-weight-bold");
-  textBackArrow.textContent = "Retour acceuil";
+  textBackArrow.textContent = "Retour à l'acceuil";
 };
 
 // ON LOAD

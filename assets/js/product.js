@@ -1,13 +1,13 @@
 // MAIN FUNCTION
 const main = async () => {
   const url = "http://localhost:3000/api/teddies/" + getSearchParams("id");
-  const products = await getData(url);
-  addItemsCards(products);
-  addToCart(products);
+  const product = await getData(url);
+  addItemCard(product);
+  addToCart(product);
 };
 
-// ADD PRODUCTS TO DOCUMENT
-const addItemsCards = (products) => {
+// ADD PRODUCT TO DOCUMENT
+const addItemCard = (product) => {
   const mainProduct = document.getElementById("main-product");
 
   const card = document.createElement("div");
@@ -25,7 +25,7 @@ const addItemsCards = (products) => {
   const img = document.createElement("img");
   box.appendChild(img);
   img.classList.add("card-img-top", "card-product");
-  img.src = products.imageUrl;
+  img.src = product.imageUrl;
 
   const body = document.createElement("div");
   box.appendChild(body);
@@ -34,12 +34,12 @@ const addItemsCards = (products) => {
   const title = document.createElement("h5");
   body.appendChild(title);
   title.classList.add("card-title", "font-weight-bold");
-  title.textContent = products.name;
+  title.textContent = product.name;
 
   const desc = document.createElement("p");
   body.appendChild(desc);
   desc.classList.add("card-text", "my-auto", "text-justify", "font-weight-bold");
-  desc.textContent = products.description;
+  desc.textContent = product.description;
 
   const footer = document.createElement("div");
   body.appendChild(footer);
@@ -64,11 +64,10 @@ const addItemsCards = (products) => {
   customSelect.setAttribute("id", "inputGroupSelect01");
   customSelect.classList.add("select-color", "font-weight-bold");
 
-  const colors = products.colors;
+  const colors = product.colors;
   const options = document.createElement("option");
   customSelect.appendChild(options);
   options.classList.add("font-weight-bold");
-  options.setAttribute("value", "selected");
   options.textContent = "Faites votre choix";
   for (let color of colors) {
     const options = document.createElement("option");
@@ -81,7 +80,7 @@ const addItemsCards = (products) => {
   const price = document.createElement("p");
   footer.appendChild(price);
   price.classList.add("price", "font-weight-bold", "my-0");
-  price.textContent = formatPrice(products.price, true);
+  price.textContent = formatPrice(product.price, true);
 
   const button = document.createElement("button");
   body.appendChild(button);
@@ -91,11 +90,11 @@ const addItemsCards = (products) => {
 };
 
 // ADD PRODUCT TO CART
-const addToCart = (product) => {
+const addToCart = (item) => {
   document.getElementById("addToCart").addEventListener("click", () => {
     const cart = new Cart()
     let selectedOption = document.getElementById("inputGroupSelect01").value;
-    cart.addItem(product._id, selectedOption)
+    cart.addItem(item._id, selectedOption, item.price)
   });
 };
 

@@ -3,7 +3,7 @@
     .card-product {
         height: 300px;
     }
-    .label-color, .btn-color {
+    .label-color {
         background-color: #b69391;
         color: #3d2000;
         border: none
@@ -23,7 +23,7 @@
 @media screen and (min-width: 768px) {
    .card {
     .card-product {
-        height: 500px;
+        height: 600px;
         width: 50%;
         border-radius: 1rem 0 0 1rem;
     }

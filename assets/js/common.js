@@ -15,7 +15,7 @@ const getData = async (url) => {
 
 // GET URLSEARCHPARAMS
 const getSearchParams = (a) => {
-  const searchParams = new URLSearchParams(document.location.search);
+  const searchParams = new URLSearchParams(window.location.search);
   return searchParams.get(a);
 };
 
@@ -43,46 +43,58 @@ function numberWithSpaces(x) {
 
 // SET MULTIPLE ATTRIBUTES
 const setAttributes = (element, attributes) => {
-  for (let key in attributes ) {
-    element.setAttribute(key, attributes[key])
+  for (let key in attributes) {
+    element.setAttribute(key, attributes[key]);
   }
-}
+};
 
+// ALL FUNCTIONS CART
 class Cart {
-  _items;
+  items;
   constructor() {
-    const cartStorage = localStorage.getItem("cart")
-    this._items = (cartStorage != null) ? JSON.parse(cartStorage) : []
+    const cartStorage = localStorage.getItem("cart");
+    this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
   }
-  addItem(id, color) {
-    const cartItem = {
+  addItem(id, color, price, quantity = 1) {
+    const addCartItem = {
       id: id,
-      color: color
+      color: color,
+      price: price,
+      quantity: quantity,
+    };
+    const existingItem = this.items.find((item) => {
+      return item.id == addCartItem.id && item.color == addCartItem.color;
+    });
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      this.items.push(addCartItem);
     }
-    this._items.push(cartItem);
-    localStorage.setItem("cart", JSON.stringify(this._items));
+    localStorage.setItem("cart", JSON.stringify(this.items));
+  }
+  removeItem(id, color) {
+    let index = this.items.findIndex((item) => item.id == id && item.color == color);
+    if (index >= 0) {
+      this.items.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(this.items));
+    }
+  }
+  increaseItem(id, color) {
+    const item = this.items.find((item) => item.id == id && item.color == color);
+    item.quantity++;
+    localStorage.setItem("cart", JSON.stringify(this.items));
+  }
+  decreaseItem(id, color) {
+    const item = this.items.find((item) => item.id == id && item.color == color);
+    item.quantity--;
+    localStorage.setItem("cart", JSON.stringify(this.items));
+  }
+  sum(item) {
+    let sum = 0;
+    sum += item.price * item.quantity;
+    return sum;
   }
   getItems() {
-    return this._items
+    return this.items;
   }
 }
-
-/* // SET QUANTITY
-function increaseCount(a, b) {
-  var input = b.previousElementSibling;
-  var value = parseInt(input.value, 10);
-  value = isNaN(value) ? 0 : value;
-  value++;
-  input.value = value;
-}
-
-function decreaseCount(a, b) {
-  var input = b.nextElementSibling;
-  var value = parseInt(input.value, 10);
-  if (value > 1) {
-    value = isNaN(value) ? 0 : value;
-    value--;
-    input.value = value;
-  }
-}
- */

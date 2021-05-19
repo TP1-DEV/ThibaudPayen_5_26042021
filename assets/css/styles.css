@@ -53,6 +53,11 @@ a:hover {
 .ori-title3 {
   font-size: 1.875rem; }
 
+.btn-color {
+  background-color: #b69391;
+  color: #3d2000;
+  border: none; }
+
 .jumbotron-img {
   height: 400px;
   background-image: url("/assets/images/teddy_by_marina_shatskih_992.jpg");
@@ -82,7 +87,7 @@ a:hover {
 .card .card-product {
   height: 300px; }
 
-.card .label-color, .card .btn-color {
+.card .label-color {
   background-color: #b69391;
   color: #3d2000;
   border: none; }
@@ -99,7 +104,7 @@ a:hover {
 
 @media screen and (min-width: 768px) {
   .card .card-product {
-    height: 500px;
+    height: 600px;
     width: 50%;
     border-radius: 1rem 0 0 1rem; } }
 
@@ -109,8 +114,3 @@ a:hover {
 
 .quantity span {
   display: block; }
-
-.btn-color {
-  background-color: #b69391;
-  color: #3d2000;
-  border: none; }
