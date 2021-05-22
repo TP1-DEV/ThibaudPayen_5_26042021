@@ -71,10 +71,10 @@ a:hover {
 
 .products .card {
   background-color: #e8d9d9;
-  border-radius: 1rem; }
+  border-radius: 1rem;
+  overflow: hidden; }
   .products .card-img-top {
     height: 250px;
-    border-radius: 1rem 1rem 0 0;
     -o-object-fit: cover;
        object-fit: cover; }
   .products .card-body .card-title {
@@ -107,6 +107,25 @@ a:hover {
     height: 600px;
     width: 50%;
     border-radius: 1rem 0 0 1rem; } }
+
+#cart {
+  position: relative; }
+  #cart #cart-qty {
+    position: absolute;
+    background-color: #4e5f6a;
+    color: white;
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.8rem;
+    border-radius: 50%;
+    top: 0.125rem;
+    right: -0.125rem; }
+
+#summary {
+  border-bottom: 2px solid #4e5f6a;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem; }
 
 .quantity input {
   width: 25px;

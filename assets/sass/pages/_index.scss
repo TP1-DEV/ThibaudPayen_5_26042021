@@ -16,9 +16,9 @@
   .card {
     background-color: #e8d9d9;
     border-radius: 1rem;
+    overflow: hidden;
     &-img-top {
       height: 250px;
-      border-radius: 1rem 1rem 0 0;
       object-fit: cover;
     }
     &-body {

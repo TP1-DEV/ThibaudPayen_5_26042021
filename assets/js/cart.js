@@ -8,8 +8,7 @@ const addItemsCards = async () => {
   const url = "http://localhost:3000/api/teddies/";
 
   const items = document.getElementById("items");
-
-  for (let item of cart.getItems()) {
+  for (const item of cart.getItems()) {
     const product = await getData(url + item.id);
 
     const article = document.createElement("article");
@@ -59,6 +58,19 @@ const addItemsCards = async () => {
     up.classList.add("up", "font-weight-bold");
     up.textContent = "+";
 
+    const price = document.createElement("div");
+    box.appendChild(price);
+    price.classList.add("col", "font-weight-bold", "text-center", "align-self-center");
+    price.textContent = formatPrice(cart.sum(item));
+
+    const remove = document.createElement("div");
+    box.appendChild(remove);
+    remove.classList.add("col", "text-center", "align-self-center");
+
+    const iconRemove = document.createElement("i");
+    remove.appendChild(iconRemove);
+    remove.classList.add("fas", "fa-trash");
+
     // SET QUANTITY
     up.addEventListener("click", () => {
       increaseCount(item);
@@ -74,6 +86,9 @@ const addItemsCards = async () => {
       cart.increaseItem(item.id, item.color);
       input.value = value;
       price.textContent = formatPrice(cart.sum(item));
+      totalPrice.textContent = "Prix total = " + formatPrice(sumPrices());
+      totalItems.textContent = "Nombre d'articles : " + sumItems();
+      cartQtyIcon.textContent = sumItems();
     };
     let decreaseCount = (item) => {
       const input = down.nextElementSibling;
@@ -84,30 +99,20 @@ const addItemsCards = async () => {
         cart.decreaseItem(item.id, item.color);
         input.value = value;
         price.textContent = formatPrice(cart.sum(item));
+        totalPrice.textContent = "Prix total = " + formatPrice(sumPrices());
+        totalItems.textContent = "Nombre d'articles : " + sumItems();
+        cartQtyIcon.textContent = sumItems();
       } else {
         cart.removeItem(item.id, item.color);
         article.remove();
       }
     };
 
-    const price = document.createElement("div");
-    box.appendChild(price);
-    price.classList.add("col", "font-weight-bold", "text-center", "align-self-center");
-    price.textContent = formatPrice(cart.sum(item));
-
-    const remove = document.createElement("div");
-    box.appendChild(remove);
-    remove.classList.add("col", "text-center", "align-self-center");
-
     // REMOVE PRODUCT FROM CART
     remove.addEventListener("click", () => {
       cart.removeItem(item.id, item.color);
       article.remove();
     });
-
-    const iconRemove = document.createElement("i");
-    remove.appendChild(iconRemove);
-    remove.classList.add("fas", "fa-trash");
   }
   const backToHome = document.createElement("a");
   items.appendChild(backToHome);
@@ -122,7 +127,57 @@ const addItemsCards = async () => {
   backToHome.appendChild(textBackArrow);
   textBackArrow.classList.add("mx-2", "font-weight-bold");
   textBackArrow.textContent = "Retour à l'acceuil";
+
+  const summary = document.getElementById("summary");
+
+  const sumItems = () => {
+    let itemsQty = 0;
+    for (const item of cart.getItems()) {
+      itemsQty += item.quantity;
+    }
+    return itemsQty;
+  };
+
+  const totalItems = document.createElement("div");
+  summary.appendChild(totalItems);
+  totalItems.classList.add("col", "font-weight-bold");
+  totalItems.textContent = "Nombre d'articles : " + sumItems();
+
+  const sumPrices = () => {
+    let itemsPrices = 0;
+    for (const item of cart.getItems()) {
+      itemsPrices += item.price * item.quantity;
+    }
+    return itemsPrices;
+  };
+
+  const totalPrice = document.createElement("div");
+  summary.appendChild(totalPrice);
+  totalPrice.classList.add("col", "font-weight-bold", "text-right");
+  totalPrice.textContent = "Prix total = " + formatPrice(sumPrices());
+
+  const cartQtyIcon = document.getElementById("cart-qty");
+  cartQtyIcon.textContent = sumItems();
 };
+
+
+const formContact = () => {
+  const firstName = document.getElementById("firstName").value
+  const lastName = document.getElementById("lastName").value
+  const address = document.getElementById("address").value
+  const city = document.getElementById("city").value
+  const email = document.getElementById("email").value
+  contact = new Contact(firstName, lastName, address, city, email)
+}
+
+const formButton =  document.getElementById("formButton")
+formButton.addEventListener("click", () => {
+  event.preventDefault()
+  formContact()
+  console.log(contact);
+})
+
+
 
 // ON LOAD
 document.onload = main();

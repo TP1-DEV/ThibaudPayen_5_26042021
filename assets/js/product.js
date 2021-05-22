@@ -69,7 +69,7 @@ const addItemCard = (product) => {
   customSelect.appendChild(options);
   options.classList.add("font-weight-bold");
   options.textContent = "Faites votre choix";
-  for (let color of colors) {
+  for (const color of colors) {
     const options = document.createElement("option");
     customSelect.appendChild(options);
     options.classList.add("font-weight-bold");
