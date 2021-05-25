@@ -5,14 +5,11 @@ const main = async () => {
   const cart = new Cart();
   addItemCard(product, cart);
   addToCart(product);
+  showCartQty()
 };
 
 // ADD PRODUCT TO DOCUMENT
-const addItemCard = (product, cart) => {
-  // GET DOM ELEMENT
-  const cartQtyIcon = document.getElementById("cart-qty");
-  cartQtyIcon.textContent = cart.sumItems();
-
+const addItemCard = (product) => {
   // GET DOM ELEMENT
   const mainProduct = document.getElementById("main-product");
 
@@ -83,10 +80,6 @@ const addItemCard = (product, cart) => {
   customSelect.classList.add("select-color", "font-weight-bold");
 
   // CREATE <option> = OPTIONS
-  const options = document.createElement("option");
-  customSelect.appendChild(options);
-  options.classList.add("font-weight-bold");
-  options.textContent = "Faites votre choix";
   for (const color of product.colors) {
     const options = document.createElement("option");
     customSelect.appendChild(options);
@@ -115,8 +108,7 @@ const addToCart = (item) => {
     const cart = new Cart();
     const selectedOption = document.getElementById("inputGroupSelect01").value;
     cart.addItem(item._id, selectedOption, item.price);
-    const cartQtyIcon = document.getElementById("cart-qty");
-    cartQtyIcon.textContent = cart.sumItems();
+    showCartQty()
   });
 };
 

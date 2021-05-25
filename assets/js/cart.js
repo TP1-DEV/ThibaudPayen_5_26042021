@@ -3,6 +3,7 @@ const main = async () => {
   const url = "http://localhost:3000/api/teddies/";
   const cart = new Cart();
   addItemsCards(url, cart);
+  showCartQty();
 };
 
 // ADD PRODUCTS TO DOCUMENT
@@ -44,7 +45,7 @@ const addItemsCards = async (url, cart) => {
     const color = document.createElement("p");
     desc.appendChild(color);
     color.classList.add("row", "font-weight-bold");
-    color.textContent = item.color;
+    color.textContent = "Couleur: " + item.color;
 
     // CREATE <div> = QUANTITY
     const quantity = document.createElement("div");
@@ -57,12 +58,25 @@ const addItemsCards = async (url, cart) => {
     down.classList.add("down", "font-weight-bold");
     down.textContent = "-";
 
-    // CREATE <input> = ARTICLE
+    // CREATE <input> = QUANTITYNUMBER
     const quantityNumber = document.createElement("input");
     quantity.appendChild(quantityNumber);
     quantityNumber.classList.add("text-center", "mx-1", "font-weight-bold");
-    quantityNumber.setAttribute("type", "text");
-    quantityNumber.setAttribute("value", item.quantity);
+    setAttributes(quantityNumber, { type: "text", value: item.quantity });
+
+    // MODIFY INPUT VALUE
+    quantityNumber.addEventListener("keyup", (event) => {
+      if (event.key == "Enter") {
+        quantityNumber.setAttribute("value", quantityNumber.value);
+        quantityNumber.textContent = quantityNumber.value;
+        item.quantity = quantityNumber.value;
+        cart.updateItemQty(item.id, item.color);
+        price.textContent = formatPrice(cart.sumPrices(item));
+        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+        showCartQty()
+      }
+    });
 
     // CREATE <span> = UP
     const up = document.createElement("span");
@@ -74,7 +88,7 @@ const addItemsCards = async (url, cart) => {
     const price = document.createElement("div");
     box.appendChild(price);
     price.classList.add("col", "font-weight-bold", "text-center", "align-self-center");
-    price.textContent = formatPrice(cart.sumPrices());
+    price.textContent = formatPrice(cart.sumPrices(item));
 
     // CREATE <div> = REMOVE
     const remove = document.createElement("div");
@@ -95,12 +109,12 @@ const addItemsCards = async (url, cart) => {
       let value = parseInt(input.value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
-      cart.increaseItem(item.id, item.color);
+      cart.increaseItemQty(item.id, item.color);
       input.value = value;
-      price.textContent = formatPrice(cart.sumPrices());
-      totalPrice.textContent = "Prix total = " + formatPrice(cart.sumPrices());
-      totalItems.textContent = "Nombre d'articles : " + cart.sumItems();
-      cartQtyIcon.textContent = cart.sumItems();
+      price.textContent = formatPrice(cart.sumPrices(item));
+      totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+      showCartQty();
     };
 
     // SET QUANTITY DOWN + UPDATE VALUE
@@ -113,18 +127,18 @@ const addItemsCards = async (url, cart) => {
       if (value > 1) {
         value = isNaN(value) ? 0 : value;
         value--;
-        cart.decreaseItem(item.id, item.color);
+        cart.decreaseItemQty(item.id, item.color);
         input.value = value;
-        price.textContent = formatPrice(cart.sumPrices());
-        totalPrice.textContent = "Prix total = " + formatPrice(cart.sumPrices());
-        totalItems.textContent = "Nombre d'articles : " + cart.sumItems();
-        cartQtyIcon.textContent = cart.sumItems();
+        price.textContent = formatPrice(cart.sumPrices(item));
+        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+        showCartQty();
       } else {
         cart.removeItem(item.id, item.color);
         article.remove();
-        totalPrice.textContent = "Prix total = " + formatPrice(cart.sumPrices());
-        totalItems.textContent = "Nombre d'articles : " + cart.sumItems();
-        cartQtyIcon.textContent = cart.sumItems();
+        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+        showCartQty();
       }
     };
 
@@ -132,9 +146,9 @@ const addItemsCards = async (url, cart) => {
     remove.addEventListener("click", () => {
       cart.removeItem(item.id, item.color);
       article.remove();
-      totalPrice.textContent = "Prix total = " + formatPrice(cart.sumPrices());
-      totalItems.textContent = "Nombre d'articles : " + cart.sumItems();
-      cartQtyIcon.textContent = cart.sumItems();
+      totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+      showCartQty();
     });
   }
 
@@ -162,17 +176,13 @@ const addItemsCards = async (url, cart) => {
   const totalItems = document.createElement("div");
   summary.appendChild(totalItems);
   totalItems.classList.add("col", "font-weight-bold");
-  totalItems.textContent = "Nombre d'articles : " + cart.sumItems();
+  totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
 
-  // CREATE <div> = TOTALPRICE  
+  // CREATE <div> = TOTALPRICE
   const totalPrice = document.createElement("div");
   summary.appendChild(totalPrice);
   totalPrice.classList.add("col", "font-weight-bold", "text-right");
-  totalPrice.textContent = "Prix total = " + formatPrice(cart.sumPrices());
-
-  // GET DOM ELEMENT
-  const cartQtyIcon = document.getElementById("cart-qty");
-  cartQtyIcon.textContent = cart.sumItems();
+  totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
 
   // CREATE NEW FORM CONTACT
   const formContact = () => {

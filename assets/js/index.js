@@ -4,14 +4,11 @@ const main = async () => {
   const products = await getData(url);
   const cart = new Cart();
   addItemsCards(products, cart);
+  showCartQty()
 };
 
 // ADD PRODUCTS TO DOCUMENT
-const addItemsCards = (products, cart) => {
-  // GET DOM ELEMENT
-  const cartQtyIcon = document.getElementById("cart-qty");
-  cartQtyIcon.textContent = cart.sumItems();
-
+const addItemsCards = (products) => {
   // GET DOM ELEMENT
   const cardSection = document.getElementById("card-section");
 

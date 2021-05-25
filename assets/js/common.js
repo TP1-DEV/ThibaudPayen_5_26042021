@@ -38,7 +38,10 @@ const formatPrice = (price, taxes = false) => {
   const centsValue = priceString.substring(centsIndex);
   const integerValue = priceString.substring(0, centsIndex);
   let formatedPrice = integerValue;
-  if (centsValue !== "00") {
+  if (priceString == 0) {
+    formatedPrice = "0";
+  }
+  if (centsValue !== "00" && priceString !== "0") {
     formatedPrice += "," + centsValue;
   }
   formatedPrice += "€";
@@ -46,6 +49,19 @@ const formatPrice = (price, taxes = false) => {
     formatedPrice += " TTC";
   }
   return numberWithSpaces(formatedPrice);
+};
+
+// SHOW HEADER CART QUANTITY
+const showCartQty = () => {
+  const cart = new Cart();
+  const cartQtyIcon = document.getElementById("cart-qty");
+  if (cart.itemsQty() > 0) {
+    cartQtyIcon.classList.add("cart-qty");
+    cartQtyIcon.textContent = cart.itemsQty();
+  } else {
+    cartQtyIcon.classList.remove("cart-qty");
+    cartQtyIcon.textContent = "";
+  }
 };
 
 // ALL FUNCTIONS CART
@@ -82,33 +98,45 @@ class Cart {
     }
   }
   // INCREASE ITEM QUANTITY IN LOCALSTORAGE
-  increaseItem(id, color) {
+  increaseItemQty(id, color) {
     const item = this.items.find((item) => item.id == id && item.color == color);
     item.quantity++;
     localStorage.setItem("cart", JSON.stringify(this.items));
   }
   // DECREASE ITEM QUANTITY IN LOCALSTORAGE
-  decreaseItem(id, color) {
+  decreaseItemQty(id, color) {
     const item = this.items.find((item) => item.id == id && item.color == color);
     item.quantity--;
     localStorage.setItem("cart", JSON.stringify(this.items));
   }
-  // SUM ITEMS QUANTITY
-  sumItems() {
+  // UPDATE ITEM QTY IN LOCALSTORAGE
+  updateItemQty(id, color) {
+    const item = this.items.find((item) => item.id == id && item.color == color);
+    item.quantity
+    localStorage.setItem("cart", JSON.stringify(this.items));
+  }
+  // ITEMS QUANTITY
+  itemsQty() {
     let itemsQty = 0;
     for (const item of this.items) {
       itemsQty += item.quantity;
     }
     return itemsQty;
-  };
-  // SUM ITEMS PRICES
-  sumPrices() {
+  }
+  // SUM ITEM PRICE
+  sumPrices(item) {
     let itemsPrices = 0;
-    for (const item of this.items) {
-      itemsPrices += item.price * item.quantity;
-    }
+    itemsPrices += item.price * item.quantity;
     return itemsPrices;
-  };
+  }
+  // TOTAL ITEMS PRICES
+  totalPrices() {
+    let totalPrices = 0;
+    for (const item of this.items) {
+      totalPrices += item.price * item.quantity;
+    }
+    return totalPrices;
+  }
   // GET LOCALSTORAGE "CART"
   getItems() {
     return this.items;
