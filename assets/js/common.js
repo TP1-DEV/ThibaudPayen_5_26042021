@@ -38,7 +38,7 @@ const formatPrice = (price, taxes = false) => {
   const centsValue = priceString.substring(centsIndex);
   const integerValue = priceString.substring(0, centsIndex);
   let formatedPrice = integerValue;
-  if (priceString == 0) {
+  if (priceString === 0) {
     formatedPrice = "0";
   }
   if (centsValue !== "00" && priceString !== "0") {
@@ -64,6 +64,17 @@ const showCartQty = () => {
   }
 };
 
+// UPDATE VALUE ON PAGE
+const updateValue = () => {
+  price.textContent = formatPrice(cart.sumPrices(item));
+  totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+  console.log(cart.totalPrices());
+  totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+  showCartQty();
+  quantityNumber.setAttribute("value", quantityNumber.value);
+  quantityNumber.textContent = quantityNumber.value;
+};
+
 // ALL FUNCTIONS CART
 class Cart {
   items;
@@ -80,7 +91,7 @@ class Cart {
       quantity: quantity,
     };
     const existingItem = this.items.find((item) => {
-      return item.id == addCartItem.id && item.color == addCartItem.color;
+      return item.id === addCartItem.id && item.color === addCartItem.color;
     });
     if (existingItem) {
       existingItem.quantity++;
@@ -91,7 +102,7 @@ class Cart {
   }
   // REMOVE ITEM FROM CART AND FROM LOCALSTORAGE
   removeItem(id, color) {
-    let index = this.items.findIndex((item) => item.id == id && item.color == color);
+    let index = this.items.findIndex((item) => item.id === id && item.color === color);
     if (index >= 0) {
       this.items.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(this.items));
@@ -99,20 +110,20 @@ class Cart {
   }
   // INCREASE ITEM QUANTITY IN LOCALSTORAGE
   increaseItemQty(id, color) {
-    const item = this.items.find((item) => item.id == id && item.color == color);
+    const item = this.items.find((item) => item.id === id && item.color === color);
     item.quantity++;
     localStorage.setItem("cart", JSON.stringify(this.items));
   }
   // DECREASE ITEM QUANTITY IN LOCALSTORAGE
   decreaseItemQty(id, color) {
-    const item = this.items.find((item) => item.id == id && item.color == color);
+    const item = this.items.find((item) => item.id === id && item.color === color);
     item.quantity--;
     localStorage.setItem("cart", JSON.stringify(this.items));
   }
   // UPDATE ITEM QTY IN LOCALSTORAGE
-  updateItemQty(id, color) {
-    const item = this.items.find((item) => item.id == id && item.color == color);
-    item.quantity
+  updateItemQty(id, color, quantity) {
+    const item = this.items.find((item) => item.id === id && item.color === color);
+    item.quantity = quantity;
     localStorage.setItem("cart", JSON.stringify(this.items));
   }
   // ITEMS QUANTITY

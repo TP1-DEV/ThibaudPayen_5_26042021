@@ -66,15 +66,13 @@ const addItemsCards = async (url, cart) => {
 
     // MODIFY INPUT VALUE
     quantityNumber.addEventListener("keyup", (event) => {
-      if (event.key == "Enter") {
+      if (event.key === "Enter") {
         quantityNumber.setAttribute("value", quantityNumber.value);
         quantityNumber.textContent = quantityNumber.value;
-        item.quantity = quantityNumber.value;
-        cart.updateItemQty(item.id, item.color);
+        cart.updateItemQty(item.id, item.color, quantityNumber.value);
         price.textContent = formatPrice(cart.sumPrices(item));
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        showCartQty()
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
       }
     });
 
@@ -115,6 +113,8 @@ const addItemsCards = async (url, cart) => {
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
       totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
       showCartQty();
+      quantityNumber.setAttribute("value", quantityNumber.value);
+      quantityNumber.textContent = quantityNumber.value;
     };
 
     // SET QUANTITY DOWN + UPDATE VALUE
@@ -133,15 +133,18 @@ const addItemsCards = async (url, cart) => {
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
         totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
         showCartQty();
+        quantityNumber.setAttribute("value", quantityNumber.value);
+        quantityNumber.textContent = quantityNumber.value;
       } else {
         cart.removeItem(item.id, item.color);
         article.remove();
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
         totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
         showCartQty();
+        quantityNumber.setAttribute("value", quantityNumber.value);
+        quantityNumber.textContent = quantityNumber.value;
       }
     };
-
     // REMOVE PRODUCT FROM CART + UPDATE VALUE
     remove.addEventListener("click", () => {
       cart.removeItem(item.id, item.color);
