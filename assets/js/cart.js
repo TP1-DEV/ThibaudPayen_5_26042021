@@ -69,10 +69,12 @@ const addItemsCards = async (url, cart) => {
       if (event.key === "Enter") {
         quantityNumber.setAttribute("value", quantityNumber.value);
         quantityNumber.textContent = quantityNumber.value;
-        cart.updateItemQty(item.id, item.color, quantityNumber.value);
+        inputValue = parseInt(quantityNumber.value, 10);
+        cart.updateItemQty(item.id, item.color, inputValue);
         price.textContent = formatPrice(cart.sumPrices(item));
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+        showCartQty();
       }
     });
 
@@ -112,6 +114,7 @@ const addItemsCards = async (url, cart) => {
       price.textContent = formatPrice(cart.sumPrices(item));
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
       totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+      console.log(cart.itemsQty());
       showCartQty();
       quantityNumber.setAttribute("value", quantityNumber.value);
       quantityNumber.textContent = quantityNumber.value;
@@ -194,28 +197,46 @@ const addItemsCards = async (url, cart) => {
     const address = document.getElementById("address").value;
     const city = document.getElementById("city").value;
     const email = document.getElementById("email").value;
-    return (contact = new Contact(firstName, lastName, address, city, email));
+
+    const nameValidation = /^[a-zA-Z]$/;
+    const addressValidation = /^[a-zA-Z0-9 ]$/;
+    const emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    const nameIsValid = nameValidation.test(firstName) && nameValidation.test(lastName) && nameValidation.test(city);
+    const addressIsValid = addressValidation.test(address);
+    const emailIsValid = emailValidation.test(email);
+    if (nameIsValid === false || addressIsValid === false || emailIsValid === false) {
+      alert("Erreur de saisie");
+    } else {
+      return (contact = new Contact(firstName, lastName, address, city, email));
+    }
   };
 
   // GET DOM ELEMENT
   const formButton = document.getElementById("formButton");
-  formButton.addEventListener("click", () => {
+  formButton.addEventListener("click", async () => {
     event.preventDefault();
     const orderData = {
       contact: formContact(),
       products: cart.getItemsId(),
     };
+    console.log(orderData);
     const request = new Request("http://localhost:3000/api/teddies/order", {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
     });
-    getData(request).then((data) => {
-      console.log(data);
-    });
+
+    const data = await getData(request);
+    console.log(data);
+    if (data.orderId) {
+      window.location = "command.html?orderId=" + data.orderId;
+    } else {
+      console.error(error);
+    }
   });
 };
 

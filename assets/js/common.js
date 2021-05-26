@@ -3,7 +3,7 @@ const getData = async (request) => {
   try {
     const response = await fetch(request);
     if (response.ok) {
-      const data = await response.json();
+      const data = response.json();
       return data;
     } else {
       console.error("Serveur status :", response.status);
@@ -38,8 +38,8 @@ const formatPrice = (price, taxes = false) => {
   const centsValue = priceString.substring(centsIndex);
   const integerValue = priceString.substring(0, centsIndex);
   let formatedPrice = integerValue;
-  if (priceString === 0) {
-    formatedPrice = "0";
+  if (priceString === "0") {
+    formatedPrice = 0;
   }
   if (centsValue !== "00" && priceString !== "0") {
     formatedPrice += "," + centsValue;
@@ -62,17 +62,6 @@ const showCartQty = () => {
     cartQtyIcon.classList.remove("cart-qty");
     cartQtyIcon.textContent = "";
   }
-};
-
-// UPDATE VALUE ON PAGE
-const updateValue = () => {
-  price.textContent = formatPrice(cart.sumPrices(item));
-  totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-  console.log(cart.totalPrices());
-  totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-  showCartQty();
-  quantityNumber.setAttribute("value", quantityNumber.value);
-  quantityNumber.textContent = quantityNumber.value;
 };
 
 // ALL FUNCTIONS CART
