@@ -1,0 +1,20 @@
+.jumbotron {
+  &-img-command {
+    height: 600px;
+    background-image: url("/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+    background-position: center;
+  }
+  @media screen and (min-width: 992px) {
+    &-img-command {
+      background-image: url("/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+      background-position: center 30%;
+      background-size: cover;
+      .command {
+        p {
+            color: #3d2000;
+            font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

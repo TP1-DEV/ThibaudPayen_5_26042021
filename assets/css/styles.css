@@ -71,14 +71,14 @@ a:hover {
   color: #3d2000;
   border: none; }
 
-.jumbotron-img {
+.jumbotron-img-index {
   height: 400px;
-  background-image: url("/assets/images/teddy_by_marina_shatskih_992.jpg");
+  background-image: url("/assets/images/teddy_by_marina_shatskih_index_992px.jpg");
   background-position: center; }
 
 @media screen and (min-width: 992px) {
-  .jumbotron-img {
-    background-image: url("/assets/images/teddy_by_marina_shatskih_1920.jpg");
+  .jumbotron-img-index {
+    background-image: url("/assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
     background-position: center 30%;
     background-size: cover; } }
 
@@ -132,3 +132,17 @@ a:hover {
 
 .quantity span {
   display: block; }
+
+.jumbotron-img-command {
+  height: 600px;
+  background-image: url("/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+  background-position: center; }
+
+@media screen and (min-width: 992px) {
+  .jumbotron-img-command {
+    background-image: url("/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+    background-position: center 30%;
+    background-size: cover; }
+    .jumbotron-img-command .command p {
+      color: #3d2000;
+      font-size: 1.5rem; } }

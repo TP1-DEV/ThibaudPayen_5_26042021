@@ -2,9 +2,8 @@
 const main = async () => {
   const url = "http://localhost:3000/api/teddies/";
   const products = await getData(url);
-  const cart = new Cart();
-  addItemsCards(products, cart);
-  showCartQty()
+  addItemsCards(products);
+  updateCartInfo();
 };
 
 // ADD PRODUCTS TO DOCUMENT

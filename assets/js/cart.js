@@ -1,17 +1,21 @@
 // MAIN FUNCTION
 const main = async () => {
   const url = "http://localhost:3000/api/teddies/";
+  const products = await getData(url)
+  console.log(products);
   const cart = new Cart();
+  console.log(cart);
   addItemsCards(url, cart);
-  showCartQty();
+  updateCartInfo();
 };
 
 // ADD PRODUCTS TO DOCUMENT
 const addItemsCards = async (url, cart) => {
   // GET DOM ELEMENT
   const items = document.getElementById("items");
-
+console.log(cart.getItems());
   for (const item of cart.getItems()) {
+    console.log(item);
     const product = await getData(url + item.id);
 
     // CREATE <article> = ARTICLE
@@ -71,10 +75,10 @@ const addItemsCards = async (url, cart) => {
         quantityNumber.textContent = quantityNumber.value;
         inputValue = parseInt(quantityNumber.value, 10);
         cart.updateItemQty(item.id, item.color, inputValue);
-        price.textContent = formatPrice(cart.sumPrices(item));
+        /* price.textContent = formatPrice(cart.sumPrices(item));
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        showCartQty();
+        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty(); */
+        updateCartInfo();
       }
     });
 
@@ -113,9 +117,8 @@ const addItemsCards = async (url, cart) => {
       input.value = value;
       price.textContent = formatPrice(cart.sumPrices(item));
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-      console.log(cart.itemsQty());
-      showCartQty();
+      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
+      updateCartInfo();
       quantityNumber.setAttribute("value", quantityNumber.value);
       quantityNumber.textContent = quantityNumber.value;
     };
@@ -135,7 +138,7 @@ const addItemsCards = async (url, cart) => {
         price.textContent = formatPrice(cart.sumPrices(item));
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
         totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        showCartQty();
+        updateCartInfo();
         quantityNumber.setAttribute("value", quantityNumber.value);
         quantityNumber.textContent = quantityNumber.value;
       } else {
@@ -143,7 +146,7 @@ const addItemsCards = async (url, cart) => {
         article.remove();
         totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
         totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        showCartQty();
+        updateCartInfo();
         quantityNumber.setAttribute("value", quantityNumber.value);
         quantityNumber.textContent = quantityNumber.value;
       }
@@ -154,7 +157,7 @@ const addItemsCards = async (url, cart) => {
       article.remove();
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
       totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-      showCartQty();
+      updateCartInfo();
     });
   }
 
@@ -220,7 +223,6 @@ const addItemsCards = async (url, cart) => {
       contact: formContact(),
       products: cart.getItemsId(),
     };
-    console.log(orderData);
     const request = new Request("http://localhost:3000/api/teddies/order", {
       method: "POST",
       headers: {
@@ -231,8 +233,8 @@ const addItemsCards = async (url, cart) => {
     });
 
     const data = await getData(request);
-    console.log(data);
     if (data.orderId) {
+      console.log(data);
       window.location = "command.html?orderId=" + data.orderId;
     } else {
       console.error(error);

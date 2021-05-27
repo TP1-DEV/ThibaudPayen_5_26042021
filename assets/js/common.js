@@ -52,7 +52,7 @@ const formatPrice = (price, taxes = false) => {
 };
 
 // SHOW HEADER CART QUANTITY
-const showCartQty = () => {
+const updateCartInfo = () => {
   const cart = new Cart();
   const cartQtyIcon = document.getElementById("cart-qty");
   if (cart.itemsQty() > 0) {
@@ -71,6 +71,7 @@ class Cart {
     const cartStorage = localStorage.getItem("cart");
     this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
   }
+
   // ADD ITEM TO CART AND TO LOCALSTORAGE
   addItem(id, color, price, quantity = 1) {
     const addCartItem = {

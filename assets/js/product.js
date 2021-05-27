@@ -2,10 +2,8 @@
 const main = async () => {
   const url = "http://localhost:3000/api/teddies/" + getSearchParams("id");
   const product = await getData(url);
-  const cart = new Cart();
-  addItemCard(product, cart);
-  addToCart(product);
-  showCartQty()
+  addItemCard(product);
+  updateCartInfo();
 };
 
 // ADD PRODUCT TO DOCUMENT
@@ -100,15 +98,13 @@ const addItemCard = (product) => {
   button.classList.add("btn", "btn-light", "mt-4", "font-weight-bold", "btn-color");
   button.setAttribute("id", "addToCart");
   button.textContent = "Ajouter au panier";
-};
 
-// ADD PRODUCT TO CART
-const addToCart = (item) => {
-  document.getElementById("addToCart").addEventListener("click", () => {
+  // ADD PRODUCT TO CART
+  button.addEventListener("click", () => {
     const cart = new Cart();
     const selectedOption = document.getElementById("inputGroupSelect01").value;
-    cart.addItem(item._id, selectedOption, item.price);
-    showCartQty()
+    cart.addItem(product._id, selectedOption, product.price);
+    updateCartInfo();
   });
 };
 
