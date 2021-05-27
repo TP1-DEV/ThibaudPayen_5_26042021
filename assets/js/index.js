@@ -1,13 +1,15 @@
-// MAIN FUNCTION
-const main = async () => {
-  const url = "http://localhost:3000/api/teddies/";
-  const products = await getData(url);
-  addItemsCards(products);
+// EXECUTE ON LOAD
+window.onload = () => {
+  addItemsCards();
   updateCartInfo();
 };
 
 // ADD PRODUCTS TO DOCUMENT
-const addItemsCards = (products) => {
+const addItemsCards = async () => {
+  // FETCH DATA
+  const url = "http://localhost:3000/api/teddies/";
+  const products = await getData(url);
+
   // GET DOM ELEMENT
   const cardSection = document.getElementById("card-section");
 
@@ -67,6 +69,3 @@ const addItemsCards = (products) => {
     price.textContent = formatPrice(product.price);
   }
 };
-
-// EXECUTE MAIN FUNCTION ON LOAD
-document.onload = main();

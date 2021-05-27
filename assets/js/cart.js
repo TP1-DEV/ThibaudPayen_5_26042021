@@ -1,21 +1,20 @@
-// MAIN FUNCTION
-const main = async () => {
-  const url = "http://localhost:3000/api/teddies/";
-  const products = await getData(url)
-  console.log(products);
-  const cart = new Cart();
-  console.log(cart);
-  addItemsCards(url, cart);
+// EXECUTE ON LOAD
+window.onload = () => {
+  addItemsCards();
   updateCartInfo();
 };
 
 // ADD PRODUCTS TO DOCUMENT
-const addItemsCards = async (url, cart) => {
+const addItemsCards = async () => {
+  const url = "http://localhost:3000/api/teddies/";
+
+  // GET LOCALSTORAGE
+  const cart = new Cart();
+
   // GET DOM ELEMENT
   const items = document.getElementById("items");
-console.log(cart.getItems());
   for (const item of cart.getItems()) {
-    console.log(item);
+    // FETCH DATA
     const product = await getData(url + item.id);
 
     // CREATE <article> = ARTICLE
@@ -117,7 +116,7 @@ console.log(cart.getItems());
       input.value = value;
       price.textContent = formatPrice(cart.sumPrices(item));
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
+      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
       updateCartInfo();
       quantityNumber.setAttribute("value", quantityNumber.value);
       quantityNumber.textContent = quantityNumber.value;
@@ -226,7 +225,7 @@ console.log(cart.getItems());
     const request = new Request("http://localhost:3000/api/teddies/order", {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
@@ -241,6 +240,3 @@ console.log(cart.getItems());
     }
   });
 };
-
-// EXECUTE MAIN FUNCTION ON LOAD
-document.onload = main();

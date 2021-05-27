@@ -3,6 +3,7 @@
     height: 600px;
     background-image: url("/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
     background-position: center;
+    border-radius: 1rem;
   }
   @media screen and (min-width: 992px) {
     &-img-command {
@@ -11,7 +12,7 @@
       background-size: cover;
       .command {
         p {
-            color: #3d2000;
+            color: #f8f9fa;
             font-size: 1.5rem;
         }
       }
