@@ -6,66 +6,57 @@ window.onload = () => {
 
 // ADD PRODUCTS TO DOCUMENT
 const addItemsCards = async () => {
-  const url = "http://localhost:3000/api/teddies/";
-
   // GET LOCALSTORAGE
   const cart = new Cart();
 
-  // GET DOM ELEMENT
-  const items = document.getElementById("items");
   for (const item of cart.getItems()) {
+
+    const updateValuesInfo = () => {
+      price.textContent = formatPrice(cart.sumPrices(item));
+      totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
+      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
+      quantityNumber.setAttribute("value", quantityNumber.value);
+      quantityNumber.textContent = quantityNumber.value;
+    };
+    document.addEventListener("updateEvent", updateValuesInfo)
+
     // FETCH DATA
+    const url = "http://localhost:3000/api/teddies/";
     const product = await getData(url + item.id);
 
+    // GET DOM ELEMENT
+    const items = document.getElementById("items");
+
     // CREATE <article> = ARTICLE
-    const article = document.createElement("article");
-    items.appendChild(article);
-    article.classList.add("row");
+    const article = createElementFactory("article", { class: "row"}, items);
 
     // CREATE <div> = BOX
-    const box = document.createElement("div");
-    article.appendChild(box);
-    box.classList.add("row");
+    const box = createElementFactory("div", { class: "row"}, article);
 
     // CREATE <img> = IMG
-    const img = document.createElement("img");
-    box.appendChild(img);
+    const img = createElementFactory("img", { class: "col-3"}, box);
     img.src = product.imageUrl;
-    img.classList.add("col-3", "w-25");
 
     // CREATE <div> = DESC
-    const desc = document.createElement("div");
-    box.appendChild(desc);
-    desc.classList.add("col-4", "align-self-center");
+    const desc = createElementFactory("div", { class: "col-4 align-self-center"}, box);
 
     // CREATE <p> = NAME
-    const name = document.createElement("p");
-    desc.appendChild(name);
-    name.classList.add("row", "font-weight-bold");
+    const name = createElementFactory("p", { class: "row font-weight-bold"}, desc);
     name.textContent = product.name;
 
     // CREATE <p> = COLOR
-    const color = document.createElement("p");
-    desc.appendChild(color);
-    color.classList.add("row", "font-weight-bold");
+    const color = createElementFactory("p", { class: "row font-weight-bold"}, desc);
     color.textContent = "Couleur: " + item.color;
 
     // CREATE <div> = QUANTITY
-    const quantity = document.createElement("div");
-    box.appendChild(quantity);
-    quantity.classList.add("col", "d-flex", "justify-content-center", "align-items-center", "quantity");
+    const quantity = createElementFactory("div", { class: "col d-flex justify-content-center align-items-center quantity"}, box);
 
     // CREATE <span> = DOWN
-    const down = document.createElement("span");
-    quantity.appendChild(down);
-    down.classList.add("down", "font-weight-bold");
+    const down = createElementFactory("span", { class: "down font-weight-bold"}, quantity);
     down.textContent = "-";
 
     // CREATE <input> = QUANTITYNUMBER
-    const quantityNumber = document.createElement("input");
-    quantity.appendChild(quantityNumber);
-    quantityNumber.classList.add("text-center", "mx-1", "font-weight-bold");
-    setAttributes(quantityNumber, { type: "text", value: item.quantity });
+    const quantityNumber = createElementFactory("input", { class: "text-center mx-1 font-weight-bold", type: "text", value: item.quantity }, quantity);
 
     // MODIFY INPUT VALUE
     quantityNumber.addEventListener("keyup", (event) => {
@@ -74,38 +65,28 @@ const addItemsCards = async () => {
         quantityNumber.textContent = quantityNumber.value;
         inputValue = parseInt(quantityNumber.value, 10);
         cart.updateItemQty(item.id, item.color, inputValue);
-        /* price.textContent = formatPrice(cart.sumPrices(item));
-        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty(); */
-        updateCartInfo();
+        cart.update()
       }
     });
 
     // CREATE <span> = UP
-    const up = document.createElement("span");
-    quantity.appendChild(up);
-    up.classList.add("up", "font-weight-bold");
+    const up = createElementFactory("span", { class: "up font-weight-bold"}, quantity);
     up.textContent = "+";
 
     // CREATE <div> = PRICE
-    const price = document.createElement("div");
-    box.appendChild(price);
-    price.classList.add("col", "font-weight-bold", "text-center", "align-self-center");
+    const price = createElementFactory("div", { class: "col align-self-center text-center font-weight-bold"}, box);
     price.textContent = formatPrice(cart.sumPrices(item));
 
     // CREATE <div> = REMOVE
-    const remove = document.createElement("div");
-    box.appendChild(remove);
-    remove.classList.add("col", "text-center", "align-self-center");
+    const remove = createElementFactory("div", { class: "col align-self-center text-center"}, box);
 
     // CREATE <i> = ICONREMOVE
-    const iconRemove = document.createElement("i");
-    remove.appendChild(iconRemove);
-    remove.classList.add("fas", "fa-trash");
+    const iconRemove = createElementFactory("i", { class: "fas fa-trash"}, remove);
 
     // SET QUANTITY UP + UPDATE VALUE
     up.addEventListener("click", () => {
       increaseCount(item);
+      cart.update()
     });
     let increaseCount = (item) => {
       const input = up.previousElementSibling;
@@ -114,17 +95,12 @@ const addItemsCards = async () => {
       value++;
       cart.increaseItemQty(item.id, item.color);
       input.value = value;
-      price.textContent = formatPrice(cart.sumPrices(item));
-      totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-      updateCartInfo();
-      quantityNumber.setAttribute("value", quantityNumber.value);
-      quantityNumber.textContent = quantityNumber.value;
     };
 
     // SET QUANTITY DOWN + UPDATE VALUE
     down.addEventListener("click", () => {
       decreaseCount(item);
+      cart.update()
     });
     let decreaseCount = (item) => {
       const input = down.nextElementSibling;
@@ -134,62 +110,39 @@ const addItemsCards = async () => {
         value--;
         cart.decreaseItemQty(item.id, item.color);
         input.value = value;
-        price.textContent = formatPrice(cart.sumPrices(item));
-        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        updateCartInfo();
-        quantityNumber.setAttribute("value", quantityNumber.value);
-        quantityNumber.textContent = quantityNumber.value;
       } else {
         cart.removeItem(item.id, item.color);
         article.remove();
-        totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-        totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-        updateCartInfo();
-        quantityNumber.setAttribute("value", quantityNumber.value);
-        quantityNumber.textContent = quantityNumber.value;
       }
     };
     // REMOVE PRODUCT FROM CART + UPDATE VALUE
     remove.addEventListener("click", () => {
       cart.removeItem(item.id, item.color);
       article.remove();
-      totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
-      totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-      updateCartInfo();
+      cart.update()
     });
   }
 
   // CREATE <a> = BACKTOMHOME
-  const backToHome = document.createElement("a");
-  items.appendChild(backToHome);
-  backToHome.classList.add("d-flex", "align-item-center", "my-3");
+  const backToHome = createElementFactory("a", { class: "d-flex align-item-center my-3"}, items);
   backToHome.href = "index.html";
 
   // CREATE <i> = BACKARROW
-  const backArrow = document.createElement("i");
-  backToHome.appendChild(backArrow);
-  backArrow.classList.add("fas", "fa-arrow-left", "pt-1");
+  const backArrow = createElementFactory("i", { class: "fas fa-arrow-left pt-1"}, backToHome);
 
   // CREATE <span> = TEXTBACKARROW
-  const textBackArrow = document.createElement("span");
-  backToHome.appendChild(textBackArrow);
-  textBackArrow.classList.add("mx-2", "font-weight-bold");
+  const textBackArrow = createElementFactory("span", { class: "mx-2 font-weight-bold"}, backToHome);
   textBackArrow.textContent = "Retour à l'acceuil";
 
   // GET DOM ELEMENT
   const summary = document.getElementById("summary");
 
   // CREATE <div> = TOTALITEMS
-  const totalItems = document.createElement("div");
-  summary.appendChild(totalItems);
-  totalItems.classList.add("col", "font-weight-bold");
+  const totalItems = createElementFactory("div", { class: "col font-weight-bold"}, summary);
   totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
 
   // CREATE <div> = TOTALPRICE
-  const totalPrice = document.createElement("div");
-  summary.appendChild(totalPrice);
-  totalPrice.classList.add("col", "font-weight-bold", "text-right");
+  const totalPrice = createElementFactory("div", { class: "col text-right font-weight-bold", id: "totalPrice"}, summary);
   totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
 
   // CREATE NEW FORM CONTACT
@@ -216,8 +169,8 @@ const addItemsCards = async () => {
 
   // GET DOM ELEMENT
   const formButton = document.getElementById("formButton");
-  formButton.addEventListener("click", async () => {
-    event.preventDefault();
+  formButton.addEventListener("click", async (e) => {
+    e.preventDefault();
     const orderData = {
       contact: formContact(),
       products: cart.getItemsId(),

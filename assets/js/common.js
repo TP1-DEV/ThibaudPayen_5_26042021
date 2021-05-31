@@ -19,6 +19,16 @@ const getSearchParams = (term) => {
   return searchParams.get(term);
 };
 
+// CREATE DOM ELEMENT
+const createElementFactory = (type, attributes, children) => {
+  const element = document.createElement(type);
+  for (let key in attributes) {
+    element.setAttribute(key, attributes[key]);
+  }
+  children.appendChild(element);
+  return element;
+};
+
 // SET MULTIPLE ATTRIBUTES
 const setAttributes = (element, attributes) => {
   for (let key in attributes) {
@@ -63,13 +73,20 @@ const updateCartInfo = () => {
     cartQtyIcon.textContent = "";
   }
 };
+document.addEventListener("updateEvent", updateCartInfo);
 
 // ALL FUNCTIONS CART
 class Cart {
   items;
+  updateEvent;
   constructor() {
     const cartStorage = localStorage.getItem("cart");
     this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
+    this.updateEvent = new CustomEvent("updateEvent", {
+      detail: {
+        cart: this,
+      },
+    });
   }
 
   // ADD ITEM TO CART AND TO LOCALSTORAGE
@@ -149,6 +166,9 @@ class Cart {
       itemsId.push(item.id);
     }
     return itemsId;
+  }
+  update() {
+    document.dispatchEvent(this.updateEvent);
   }
 }
 // FORM CONTACT

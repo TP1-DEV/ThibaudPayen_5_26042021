@@ -14,91 +14,57 @@ const addItemCard = async () => {
   const mainProduct = document.getElementById("main-product");
 
   // CREATE <div> = CARD
-  const card = document.createElement("div");
-  mainProduct.appendChild(card);
-  card.classList.add("row", "row-col-1", "products", "my-4");
+  const cardBox = createElementFactory("div", { class: "row row-cols-1 products my-4" }, mainProduct);
 
   // CREATE <article> = ARTICLE
-  const article = document.createElement("article");
-  card.appendChild(article);
-  article.classList.add("col", "my-4");
+  const card = createElementFactory("article", { class: "col my-4" }, cardBox);
 
   // CREATE <div> = BOX
-  const box = document.createElement("div");
-  article.appendChild(box);
-  box.classList.add("card", "flex-md-row", "shadow");
+  const box = createElementFactory("div", { class: "card flex-md-row shadow" }, card);
 
   // CREATE <img> = IMG
-  const img = document.createElement("img");
-  box.appendChild(img);
-  img.classList.add("card-img-top", "card-product");
+  const img = createElementFactory("img", { class: "card-img-top card-product" }, box);
   img.src = product.imageUrl;
 
   // CREATE <div> = BODY
-  const body = document.createElement("div");
-  box.appendChild(body);
-  body.classList.add("card-body", "d-flex", "flex-column");
+  const body = createElementFactory("div", { class: "card-body d-flex flex-column" }, box);
 
   // CREATE <h5> = TITLE
-  const title = document.createElement("h5");
-  body.appendChild(title);
-  title.classList.add("card-title", "font-weight-bold");
+  const title = createElementFactory("h5", { class: "card-title font-weight-bold" }, body);
   title.textContent = product.name;
 
   // CREATE <p> = DESC
-  const desc = document.createElement("p");
-  body.appendChild(desc);
-  desc.classList.add("card-text", "my-auto", "text-justify", "font-weight-bold");
+  const desc = createElementFactory("p", { class: "card-text my-auto text-justify font-weight-bold" }, body);
   desc.textContent = product.description;
 
   // CREATE <div> = FOOTER
-  const footer = document.createElement("div");
-  body.appendChild(footer);
-  footer.classList.add("card-price", "d-flex", "justify-content-between");
+  const footer = createElementFactory("div", { class: "card-price d-flex justify-content-between" }, body);
 
   // CREATE <div> = INPUT
-  const inputGroup = document.createElement("div");
-  footer.appendChild(inputGroup);
-  inputGroup.classList.add("input-group", "mb-4");
+  const inputGroup = createElementFactory("div", { class: "input-group mb-4" }, footer);
 
   // CREATE <div> = INPUTPREPEND
-  const inputGroupPrepend = document.createElement("div");
-  inputGroup.appendChild(inputGroupPrepend);
-  inputGroupPrepend.classList.add("input-group-prepend");
+  const inputGroupPrepend = createElementFactory("div", { class: "input-group-prepend" }, inputGroup);
 
   // CREATE <label> = LABEL
-  const label = document.createElement("label");
-  inputGroupPrepend.appendChild(label);
-  label.classList.add("input-group-text", "label-color", "font-weight-bold");
-  label.setAttribute("for", "inputGroupSelect01");
+  const label = createElementFactory("label", { class: "input-group-text label-color font-weight-bold", for: "inputGroupSelect01" }, inputGroupPrepend);
   label.textContent = "Couleurs";
 
   // CREATE <select> = CUSTOMSELECT
-  const customSelect = document.createElement("select");
-  inputGroup.appendChild(customSelect);
-  customSelect.setAttribute("id", "inputGroupSelect01");
-  customSelect.classList.add("select-color", "font-weight-bold");
+  const customSelect = createElementFactory("select", { class: "select-color font-weight-bold", id: "inputGroupSelect01" }, inputGroup);
 
   // CREATE <option> = OPTIONS
   for (const color of product.colors) {
-    const options = document.createElement("option");
-    customSelect.appendChild(options);
-    options.classList.add("font-weight-bold");
-    options.setAttribute("value", color);
+    const options = createElementFactory("option", { class: "font-weight-bold", value: color }, customSelect);
     options.textContent = color;
   }
 
   // CREATE <p> = PRICE
-  const price = document.createElement("p");
-  footer.appendChild(price);
-  price.classList.add("price", "font-weight-bold", "my-0");
+  const price = createElementFactory("p", { class: "price my-0 font-weight-bold" }, footer);
   price.textContent = formatPrice(product.price, true);
 
   // CREATE <button> = BUTTON
-  const button = document.createElement("button");
-  body.appendChild(button);
-  button.classList.add("btn", "btn-light", "mt-4", "font-weight-bold", "btn-color");
-  button.setAttribute("id", "addToCart");
+  const button = createElementFactory("button", { class: "btn btn-light btn-color mt-4 font-weight-bold", id: "addToCart" }, body);
   button.textContent = "Ajouter au panier";
 
   // ADD PRODUCT TO CART
@@ -106,6 +72,6 @@ const addItemCard = async () => {
     const cart = new Cart();
     const selectedOption = document.getElementById("inputGroupSelect01").value;
     cart.addItem(product._id, selectedOption, product.price);
-    updateCartInfo();
+    cart.update();
   });
 };

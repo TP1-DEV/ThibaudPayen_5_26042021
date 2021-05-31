@@ -12,20 +12,14 @@ const sumOrder = () => {
   const order = document.getElementById("order");
 
   // CREATE <p> TOTALQUANTITY
-  const totalQuantity = document.createElement("p");
-  order.appendChild(totalQuantity);
-  totalQuantity.classList.add("font-weight-bold");
+  const totalQuantity = createElementFactory("p", { class: "font-weight-bold"}, order);
   totalQuantity.textContent = "Quantité d'articles : " + cart.itemsQty();
 
   // CREATE <p> TOTALPRICE
-  const totalPrice = document.createElement("p");
-  order.appendChild(totalPrice);
-  totalPrice.classList.add("font-weight-bold");
+  const totalPrice = createElementFactory("p", { class: "font-weight-bold"}, order);
   totalPrice.textContent = "Prix total : " + formatPrice(cart.totalPrices(), true);
 
   // CREATE <p> ORDERID
-  const orderId = document.createElement("p");
-  order.appendChild(orderId);
-  orderId.classList.add("font-weight-bold");
+  const orderId = createElementFactory("p", { class: "font-weight-bold"}, order);
   orderId.textContent = "Commande n° : " + getSearchParams("orderId");
 };

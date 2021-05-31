@@ -14,58 +14,39 @@ const addItemsCards = async () => {
   const cardSection = document.getElementById("card-section");
 
   // CREATE <div> = CARD
-  const card = document.createElement("div");
-  cardSection.appendChild(card);
-  card.classList.add("row", "row-cols-1", "row-cols-md-3", "products", "my-4");
+  const cardBox = createElementFactory("div", {class: "row row-cols-1 row-cols-md-3 products my4"}, cardSection);
 
   for (let product of products) {
     // CREATE <article> = ARTICLE
-    const article = document.createElement("article");
-    card.appendChild(article);
-    article.classList.add("col", "my-4");
+    const card = createElementFactory("article", { class: "col my-4"}, cardBox);
 
     // CREATE <a> = LINK
-    const link = document.createElement("a");
-    article.appendChild(link);
+    const link = createElementFactory("a", { class: "" }, card);
     link.href = "product.html?id=" + product._id;
 
     // CREATE <div> = BOX
-    const box = document.createElement("div");
-    link.appendChild(box);
-    box.classList.add("card", "shadow");
+    const box = createElementFactory("div", { class: " card shadow"}, link);
 
     // CREATE <img> = IMG
-    const img = document.createElement("img");
-    box.appendChild(img);
-    img.classList.add("card-img-top");
+    const img = createElementFactory("img", { class: "card-img-top"}, box);
     img.src = product.imageUrl;
 
     // CREATE <div> = BODY
-    const body = document.createElement("div");
-    box.appendChild(body);
-    body.classList.add("card-body", "d-flex", "flex-column");
+    const body = createElementFactory("div", { class: "card-body d-flex flex-column"}, box);
 
     // CREATE <h5> = TITLE
-    const title = document.createElement("h5");
-    body.appendChild(title);
-    title.classList.add("card-title", "font-weight-bold");
+    const title = createElementFactory("h5", { class : "card-title font-weight-bold"}, body);
     title.textContent = product.name;
 
     // CREATE <p> = DESC
-    const desc = document.createElement("p");
-    body.appendChild(desc);
-    desc.classList.add("card-text", "mb-auto", "text-justify", "font-weight-bold");
+    const desc = createElementFactory("p", { class: "card-text mb-auto text-justify font-weight-bold"}, body);
     desc.textContent = product.description;
 
     // CREATE <div> = FOOTER
-    const footer = document.createElement("div");
-    body.appendChild(footer);
-    footer.classList.add("card-price", "d-flex", "justify-content-end");
+    const footer = createElementFactory("div", { class: "card-price d-flex justify-content-end"}, body);
 
     // CREATE <p> = PRICE
-    const price = document.createElement("p");
-    footer.appendChild(price);
-    price.classList.add("price", "font-weight-bold", "my-0");
+    const price = createElementFactory("p", { class: "price font-weight-bold my-0"}, footer);
     price.textContent = formatPrice(product.price);
   }
 };
