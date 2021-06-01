@@ -14,7 +14,7 @@ const addItemsCards = async () => {
   const cardSection = document.getElementById("card-section");
 
   // CREATE <div> = CARD
-  const cardBox = createElementFactory("div", {class: "row row-cols-1 row-cols-md-3 products my4"}, cardSection);
+  const cardBox = createElementFactory("div", {class: "row row-cols-1 row-cols-md-3 products my-4"}, cardSection);
 
   for (let product of products) {
     // CREATE <article> = ARTICLE
@@ -25,7 +25,7 @@ const addItemsCards = async () => {
     link.href = "product.html?id=" + product._id;
 
     // CREATE <div> = BOX
-    const box = createElementFactory("div", { class: " card shadow"}, link);
+    const box = createElementFactory("div", { class: "card shadow"}, link);
 
     // CREATE <img> = IMG
     const img = createElementFactory("img", { class: "card-img-top"}, box);
