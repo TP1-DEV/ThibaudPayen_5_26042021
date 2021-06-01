@@ -4,6 +4,18 @@ window.onload = () => {
   updateCartInfo();
 };
 
+const quantityComponent = (fn) => {
+  quantityNumber.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      quantityNumber.setAttribute("value", quantityNumber.value);
+      quantityNumber.textContent = quantityNumber.value;
+      inputValue = parseInt(quantityNumber.value, 10);
+      cart.updateItemQty(item.id, item.color, inputValue);
+      fn(quantityNumber.value)
+    }
+  });
+}
+
 // ADD PRODUCTS TO DOCUMENT
 const addItemsCards = async () => {
   // GET LOCALSTORAGE
@@ -15,8 +27,6 @@ const addItemsCards = async () => {
       price.textContent = formatPrice(cart.sumPrices(item));
       totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
       totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-      quantityNumber.setAttribute("value", quantityNumber.value);
-      quantityNumber.textContent = quantityNumber.value;
     };
     document.addEventListener("updateEvent", updateValuesInfo)
 
@@ -65,7 +75,6 @@ const addItemsCards = async () => {
         quantityNumber.textContent = quantityNumber.value;
         inputValue = parseInt(quantityNumber.value, 10);
         cart.updateItemQty(item.id, item.color, inputValue);
-        cart.update()
       }
     });
 
@@ -76,6 +85,9 @@ const addItemsCards = async () => {
     // CREATE <div> = PRICE
     const price = createElementFactory("div", { class: "col align-self-center text-center font-weight-bold"}, box);
     price.textContent = formatPrice(cart.sumPrices(item));
+    quantityComponent(() => {
+      price.textContent = formatPrice(cart.sumPrices(item));
+    })
 
     // CREATE <div> = REMOVE
     const remove = createElementFactory("div", { class: "col align-self-center text-center"}, box);
@@ -86,7 +98,6 @@ const addItemsCards = async () => {
     // SET QUANTITY UP + UPDATE VALUE
     up.addEventListener("click", () => {
       increaseCount(item);
-      cart.update()
     });
     let increaseCount = (item) => {
       const input = up.previousElementSibling;
@@ -95,12 +106,12 @@ const addItemsCards = async () => {
       value++;
       cart.increaseItemQty(item.id, item.color);
       input.value = value;
+
     };
 
     // SET QUANTITY DOWN + UPDATE VALUE
     down.addEventListener("click", () => {
       decreaseCount(item);
-      cart.update()
     });
     let decreaseCount = (item) => {
       const input = down.nextElementSibling;
@@ -119,7 +130,6 @@ const addItemsCards = async () => {
     remove.addEventListener("click", () => {
       cart.removeItem(item.id, item.color);
       article.remove();
-      cart.update()
     });
   }
 
