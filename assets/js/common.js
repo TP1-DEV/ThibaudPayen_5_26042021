@@ -20,12 +20,12 @@ const getSearchParams = (term) => {
 };
 
 // CREATE DOM ELEMENT
-const createElementFactory = (type, attributes, children) => {
+const createElementFactory = (type, attributes, parent) => {
   const element = document.createElement(type);
   for (let key in attributes) {
     element.setAttribute(key, attributes[key]);
   }
-  children.appendChild(element);
+  parent.appendChild(element);
   return element;
 };
 
@@ -62,8 +62,8 @@ const formatPrice = (price, taxes = false) => {
 };
 
 // SHOW HEADER CART QUANTITY
-const updateCartInfo = () => {
-  const cart = new Cart();
+const updateCartInfo = (e) => {
+  const cart = e.detail.cart
   const cartQtyIcon = document.getElementById("cart-qty");
   if (cart.itemsQty() > 0) {
     cartQtyIcon.classList.add("cart-qty");
@@ -84,11 +84,10 @@ class Cart {
     this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
     this.updateEvent = new CustomEvent("updateEvent", {
       detail: {
-        cart: this,
+        cart: this
       },
     });
   }
-
   // ADD ITEM TO CART AND TO LOCALSTORAGE
   addItem(id, color, price, quantity = 1) {
     const addCartItem = {
@@ -105,33 +104,33 @@ class Cart {
     } else {
       this.items.push(addCartItem);
     }
-    localStorage.setItem("cart", JSON.stringify(this.items));
+    this.update()
   }
   // REMOVE ITEM FROM CART AND FROM LOCALSTORAGE
   removeItem(id, color) {
     let index = this.items.findIndex((item) => item.id === id && item.color === color);
     if (index >= 0) {
       this.items.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(this.items));
+      this.update()
     }
   }
   // INCREASE ITEM QUANTITY IN LOCALSTORAGE
   increaseItemQty(id, color) {
     const item = this.items.find((item) => item.id === id && item.color === color);
     item.quantity++;
-    localStorage.setItem("cart", JSON.stringify(this.items));
+    this.update()
   }
   // DECREASE ITEM QUANTITY IN LOCALSTORAGE
   decreaseItemQty(id, color) {
     const item = this.items.find((item) => item.id === id && item.color === color);
     item.quantity--;
-    localStorage.setItem("cart", JSON.stringify(this.items));
+    this.update()
   }
   // UPDATE ITEM QTY IN LOCALSTORAGE
   updateItemQty(id, color, quantity) {
     const item = this.items.find((item) => item.id === id && item.color === color);
     item.quantity = quantity;
-    localStorage.setItem("cart", JSON.stringify(this.items));
+    this.update()
   }
   // ITEMS QUANTITY
   itemsQty() {
@@ -168,6 +167,7 @@ class Cart {
     return itemsId;
   }
   update() {
+    localStorage.setItem("cart", JSON.stringify(this.items));
     document.dispatchEvent(this.updateEvent);
   }
 }
