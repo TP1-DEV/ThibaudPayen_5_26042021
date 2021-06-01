@@ -12,24 +12,56 @@
     }
   }
 }
-.products {
-  .card {
-    background-color: #e8d9d9;
-    border-radius: 1rem;
-    overflow: hidden;
-    &-img-top {
-      height: 250px;
-      object-fit: cover;
+#index-section {
+  .card-container {
+    @include make-row();
+    @include row-cols(1);
+    @include media-breakpoint-up(md) {
+      @include row-cols(3);
     }
-    &-body {
-      .card-title {
-        color: #3d2000;
-        font-size: 1.5rem;
-      }
-      .card-price {
-        .price {
-          color: #22181c;
-          font-size: 1.5rem;
+    @extend .my-4;
+    .card-article {
+      @include make-col-ready();
+      @extend .my-4;
+      &-link {
+        .card-box {
+          @extend .card;
+          background-color: #e8d9d9;
+          border-radius: 1rem;
+          overflow: hidden;
+          @extend .shadow;
+          &-img {
+            @extend .card-img-top;
+            height: 250px;
+            object-fit: cover;
+          }
+          &-body {
+            @extend .card-body;
+            @extend .d-flex;
+            @extend .flex-column;
+            &-title {
+              @extend .card-title;
+              color: #3d2000;
+              font-size: 1.5rem;
+              @extend .font-weight-bold;
+            }
+            &-text {
+              @extend .card-text;
+              @extend .mb-auto;
+              @extend .text-justify;
+              @extend .font-weight-bold;
+            }
+            &-price {
+              @extend .d-flex;
+              @extend .justify-content-end;
+              &-text {
+                color: #22181c;
+                font-size: 1.5rem;
+                @extend .my-0;
+                @extend .font-weight-bold;
+              }
+            }
+          }
         }
       }
     }

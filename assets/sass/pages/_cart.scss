@@ -1,15 +1,91 @@
-#summary {
-  border-bottom: 2px solid #4e5f6a;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-}
-.quantity {
-  input {
-    width: 26px;
-    height: 26px;
-  }
-  span {
-    display: block;
-  }
-}
+#cart-main {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  .card-article {
+    @include make-col-ready();
+    @include make-row();
+    @extend .m-0;
+    .card-box {
+      @include make-row();
+      &-img {
+        @include make-col(3);
+      }
+      &-body {
+        @include make-col(4);
+        @extend .align-self-center;
+        &-title {
+          @extend .ml-3;
+          @extend .font-weight-bold;
+        }
+        &-text {
+          @extend .ml-3;
+          @extend .font-weight-bold;
+        }
 
+        &-price {
+          @include make-col(2);
+          @extend .align-self-center;
+          @extend .text-center;
+          order: 4;
+          &-text {
+            @extend .my-0;
+            @extend .font-weight-bold;
+            color: #22181c;
+            font-size: 1.5rem;
+          }
+        }
+      }
+      .quantity {
+        @include make-col(2);
+        @extend .d-flex;
+        @extend .justify-content-center;
+        @extend .align-items-center;
+        order: 3;
+        input {
+          @extend .font-weight-bold;
+          @extend .text-center;
+          @extend .mx-1;
+          width: 26px;
+          height: 26px;
+        }
+        span {
+          @extend .font-weight-bold;
+          display: block;
+        }
+      }
+      .remove {
+        @include make-col(1);
+        @extend .align-self-center;
+        @extend .text-center;
+        order: 5;
+      }
+    }
+  }
+  .back-home {
+    @extend .d-flex;
+    @extend .mt-3;
+    i {
+      @extend .pt-1;
+    }
+    span {
+      @extend .mx-2;
+    }
+  }
+  #summary {
+    border-bottom: 2px solid #4e5f6a;
+    margin-bottom: 1rem;
+    #total-items {
+      @include make-col(6);
+      @extend .font-weight-bold;
+    }
+    #total-price {
+      @include make-col(6);
+      @extend .text-right;
+      @extend .font-weight-bold;
+    }
+  }
+  #formButton {
+    @extend .d-block;
+    @extend .m-auto;
+  }
+}
