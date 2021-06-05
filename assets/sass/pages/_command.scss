@@ -1,20 +1,23 @@
-.jumbotron {
-  &-img-command {
-    height: 600px;
-    background-image: url("/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
-    background-position: center;
-    border-radius: 1rem;
-  }
-  @media screen and (min-width: 992px) {
+#command-container {
+  @include make-col-ready();
+  .jumbotron {
     &-img-command {
-      background-image: url("/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
-      background-position: center 30%;
-      background-size: cover;
+      height: 600px;
+      background-image: url("/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+      background-position: center;
+      border-radius: 1rem;
       .command {
         p {
-            color: #f8f9fa;
-            font-size: 1.5rem;
+          color: #f8f9fa;
+          font-size: 1.5rem;
         }
+      }
+    }
+    @media screen and (min-width: 992px) {
+      &-img-command {
+        background-image: url("/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+        background-position: center 30%;
+        background-size: cover;
       }
     }
   }

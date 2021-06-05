@@ -1,8 +1,8 @@
 // EXECUTE ON LOAD
 window.onload = () => {
   addItemsCards();
-  const cart = Cart.getCart()
-  cart.updateHeader()
+  const cart = Cart.getCart();
+  cart.updateHeader();
 };
 // ADD PRODUCTS TO DOCUMENT
 const addItemsCards = async () => {

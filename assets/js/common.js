@@ -37,14 +37,11 @@ const createCard = (element, items, links = false, prices = false) => {
   title.textContent = items.name;
   const desc = createElementFactory("p", { class: "card-box-body-text" }, body);
   desc.textContent = items.description;
-  let footer = "";
   if (prices) {
     footer = createElementFactory("div", { class: "card-box-body-price" }, body);
-  } else {
-    footer = createElementFactory("div", { class: "card-box-body-price" }, box);
+    const price = createElementFactory("p", { class: "card-box-body-price-text" }, footer);
+    price.textContent = formatPrice(items.price);
   }
-  const price = createElementFactory("p", { class: "card-box-body-price-text" }, footer);
-  price.textContent = formatPrice(items.price);
   return card;
 };
 
@@ -73,60 +70,6 @@ const buttonAddToCart = (id, item) => {
   });
 };
 
-// CREATE QUANTITY BOX
-const createQuantity = (id, item, card) => {
-  const cart = Cart.getCart();
-  const quantity = createElementFactory("div", { class: "quantity" }, id);
-  const down = createElementFactory("span", { class: "down" }, quantity);
-  down.textContent = "-";
-  const quantityNumber = createElementFactory("input", { type: "text", value: item.quantity }, quantity);
-  const up = createElementFactory("span", { class: "up" }, quantity);
-  up.textContent = "+";
-  up.addEventListener("click", () => {
-    increaseCount(item);
-  });
-  down.addEventListener("click", () => {
-    decreaseCount(item);
-  });
-  let increaseCount = (item) => {
-    const input = up.previousElementSibling;
-    let value = parseInt(input.value, 10);
-    value = isNaN(value) ? 0 : value;
-    value++;
-    input.value = value;
-    cart.increaseItemQty(item.id, item.color);
-  };
-  let decreaseCount = (item) => {
-    const input = down.nextElementSibling;
-    let value = parseInt(input.value, 10);
-    if (value > 1) {
-      value = isNaN(value) ? 0 : value;
-      value--;
-      input.value = value;
-      cart.decreaseItemQty(item.id, item.color);
-    } else {
-      cart.removeItem(item.id, item.color);
-      card.remove();
-    }
-  };
-  quantityNumber.addEventListener("change", (item) => {
-    quantityNumber.setAttribute("value", quantityNumber.value);
-    inputValue = parseInt(quantityNumber.value, 10);
-    cart.updateItemQty(item.id, item.color, inputValue);
-  });
-};
-
-// CREATE REMOVE
-const createRemove = (id, item, card) => {
-  const cart = Cart.getCart();
-  const remove = createElementFactory("div", { class: "remove" }, id);
-  const iconRemove = createElementFactory("i", { class: "fas fa-trash" }, remove);
-  remove.addEventListener("click", () => {
-    cart.removeItem(item.id, item.color);
-    card.remove();
-  });
-};
-
 // CREATE BACK TO HOME
 const createBackToHome = (id) => {
   const backToHome = createElementFactory("a", { class: "back-home" }, id);
@@ -145,32 +88,7 @@ const createTotalSummary = (id) => {
   totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
 };
 
-// BUTTON FORM ORDER
-const buttonFormOrder = (id) => {
-  id.addEventListener("click", async (e) => {
-    e.preventDefault();
-    const cart = Cart.getCart();
-    const orderData = {
-      contact: formContact(),
-      products: cart.getItemsId(),
-    };
-    const request = new Request("http://localhost:3000/api/teddies/order", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
-    const data = await getData(request);
-    if (data.orderId) {
-      console.log(data);
-      window.location = "command.html?orderId=" + data.orderId;
-    } else {
-      console.error(error);
-    }
-  });
-};
+
 
 // CREATE SUM ORDER
 const createSumOrder = (id) => {
@@ -189,7 +107,9 @@ const createElementFactory = (type, attributes, parent) => {
   for (let key in attributes) {
     element.setAttribute(key, attributes[key]);
   }
-  parent.appendChild(element);
+  if (parent) {
+    parent.appendChild(element);
+  }
   return element;
 };
 
@@ -239,18 +159,88 @@ const updateCartQty = (e) => {
 };
 document.addEventListener("updateEvent", updateCartQty);
 
+// ALL FUNCTION CLASS CART ITEM COMPONENT
 class CartItemComponent {
-  constructor(item) {
-    this.item = item.id;
-    this.color = item.color;
-    this.component = () => {
-
-    }
+  component;
+  quantityNumber;
+  constructor(item, id) {
+    this.item = item;
+    this.quantityComponent = this.createQuantity();
+    this.sumPriceComponent = this.createSumPrice();
+    this.removeComponent = this.createRemove();
+    this.component = this.createCartItemComponent(id);
+    this.card = id.parentElement
   }
   // GET COMPONENT
   getComponent() {
-    return this.component
+    return this.component;
   }
+  // CREATE QUANTITY BOX
+  createQuantity() {
+    const quantity = createElementFactory("div", { class: "card-component-quantity" });
+    const down = createElementFactory("span", { class: "down" }, quantity);
+    down.textContent = "-";
+    this.quantityNumber = createElementFactory("input", { type: "text", value: this.item.quantity }, quantity);
+    const up = createElementFactory("span", { class: "up" }, quantity);
+    up.textContent = "+";
+    up.addEventListener("click", () => {
+      const input = up.previousElementSibling;
+      let value = parseInt(input.value, 10);
+      value = isNaN(value) ? 0 : value;
+      value++;
+      this.updateQty(value)
+    });
+    down.addEventListener("click", () => {
+      const input = down.nextElementSibling;
+      let value = parseInt(input.value, 10);
+      if (value > 1) {
+        value = isNaN(value) ? 0 : value;
+        value--;
+        this.updateQty(value)
+      } else {
+        this.removeItem()
+      }
+    });
+    this.quantityNumber.addEventListener("change", () => {
+      let value = parseInt(this.quantityNumber.value, 10);
+      this.updateQty(value)
+    });
+    return quantity;
+  }
+  // CREATE SUM PRICE
+  createSumPrice() {
+    const sumPrice = createElementFactory("p", { class: "card-component-price" });
+    sumPrice.textContent = formatPrice(this.item.quantity * this.item.price);
+    return sumPrice;
+  }
+  // CREATE REMOVE
+  createRemove() {
+    const remove = createElementFactory("div", { class: "card-component-remove" });
+    const iconRemove = createElementFactory("i", { class: "fas fa-trash" }, remove);
+    remove.addEventListener("click", () => {
+      this.removeItem()
+    });
+    return remove;
+  }
+  // CREATE CART ITEM COMPONENT
+  createCartItemComponent() {
+    const cardComponent = createElementFactory("div", { class: "card-component"})
+    cardComponent.appendChild(this.quantityComponent);
+    cardComponent.appendChild(this.sumPriceComponent);
+    cardComponent.appendChild(this.removeComponent);
+    return cardComponent;
+  }
+  // UPDATE QUANTITY
+  updateQty(qty) {
+  this.quantityNumber.value = qty
+  this.sumPriceComponent.textContent = formatPrice(qty * this.item.price)
+  Cart.getCart().updateItemQty(this.item.id, this.item.color, qty)
+  }
+  // REMOVE ITEM
+  removeItem() {
+    Cart.getCart().removeItem(this.item.id, this.item.color);
+    this.card.remove();
+  } 
 }
 
 // ALL FUNCTIONS CART
@@ -374,11 +364,12 @@ class Contact {
 
 // CREATE NEW FORM CONTACT
 const formContact = () => {
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
-  const address = document.getElementById("address").value;
-  const city = document.getElementById("city").value;
-  const email = document.getElementById("email").value;
+  const formOrder =  document.forms["form-order"]
+  const firstName = formOrder.firstName.value;
+  const lastName = formOrder.lastName.value;
+  const address = formOrder.address.value;
+  const city = formOrder.city.value;
+  const email = formOrder.email.value;
 
   const nameValidation = /^[a-zA-Z]$/;
   const addressValidation = /^[a-zA-Z0-9 ]$/;
@@ -392,4 +383,32 @@ const formContact = () => {
   } else {
     return (contact = new Contact(firstName, lastName, address, city, email));
   }
+};
+
+
+// BUTTON FORM ORDER
+const buttonFormOrder = (id) => {
+  id.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const cart = Cart.getCart();
+    const orderData = {
+      contact: formContact(),
+      products: cart.getItemsId(),
+    };
+    const request = new Request("http://localhost:3000/api/teddies/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+    const data = await getData(request);
+    if (data.orderId) {
+      console.log(data);
+      window.location = "command.html?orderId=" + data.orderId;
+    } else {
+      console.error(error);
+    }
+  });
 };

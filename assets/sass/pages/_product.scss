@@ -3,82 +3,90 @@
     @include make-row();
     @include row-cols(1);
     @extend .my-4;
+    @extend .m-0;
     .card-article {
+      @include make-col-ready();
       @extend .my-4;
-        .card-box {
-          @extend .card;
-          background-color: #e8d9d9;
-          border-radius: 1rem;
-          overflow: hidden;
-          @extend .shadow;
-          @extend .flex-md-row;
-          &-img {
-            @extend .card-img-top;
-            height: 300px;
-            object-fit: cover;
-            @include media-breakpoint-up(md) {
-              height: 600px;
-              width: 50%;
-              border-radius: 1rem 0 0 1rem;
-            }
+      .card-box {
+        @extend .card;
+        background-color: #e8d9d9;
+        border-radius: 1rem;
+        overflow: hidden;
+        @extend .shadow;
+        @extend .flex-md-row;
+        &-img {
+          @extend .card-img-top;
+          height: 300px;
+          object-fit: cover;
+          @include media-breakpoint-up(md) {
+            height: 600px;
+            width: 50%;
+            border-radius: 1rem 0 0 1rem;
           }
-          &-body {
-            @extend .card-body;
+        }
+        &-body {
+          @extend .card-body;
+          @extend .d-flex;
+          @extend .flex-column;
+          &-title {
+            @extend .card-title;
+            color: #3d2000;
+            font-size: 1.5rem;
+            @extend .font-weight-bold;
+          }
+          &-text {
+            @extend .card-text;
+            @extend .my-auto;
+            @extend .text-justify;
+            @extend .font-weight-bold;
+          }
+          &-price {
             @extend .d-flex;
-            @extend .flex-column;
-            &-title {
-              @extend .card-title;
-              color: #3d2000;
-              font-size: 1.5rem;
-              @extend .font-weight-bold;
-            }
+            @extend .justify-content-between;
+            @extend .mt-3;
             &-text {
-              @extend .card-text;
-              @extend .my-auto;
-              @extend .text-justify;
+              order: 2;
+              color: #22181c;
+              font-size: 1.5rem;
+              @extend .my-0;
               @extend .font-weight-bold;
             }
-            &-price {
-              @extend .d-flex;
-              @extend .justify-content-between;
-              &-text {
-                  order: 2;
-                color: #22181c;
-                font-size: 1.5rem;
-                @extend .my-0;
-                @extend .font-weight-bold;
-              }
-              .input-group {
-                  order: 1;
-                width: auto;
-                @extend .mb-4;
-                &-prepend {
-                  .input-group-text {
-                    background-color: #b69391;
-                    color: #3d2000;
-                    border: none;
-                    @extend .font-weight-bold;
-                  }
-                }
-                .select-color {
-                  background-color: #f1ebe4;
+            .input-group {
+              order: 1;
+              width: auto;
+              &-prepend {
+                .input-group-text {
+                  background-color: #b69391;
                   color: #3d2000;
                   border: none;
-                  border-radius: 0 0.25rem 0.25rem 0;
                   @extend .font-weight-bold;
-                  option {
-                    @extend .font-weight-bold;
-                  }
+                }
+              }
+              .select-color {
+                cursor: pointer;
+                background-color: #f1ebe4;
+                color: #3d2000;
+                border: none;
+                border-radius: 0 0.25rem 0.25rem 0;
+                @extend .font-weight-bold;
+                option {
+                  @extend .font-weight-bold;
                 }
               }
             }
-            .btn {
-               @extend .btn-light;
-               @extend .btn-color;
-               @extend .mt-4;
-               @extend .font-weight-bold;
-            }
           }
+          .btn {
+            @extend .btn-light;
+            @extend .btn-color;
+            @extend .mt-4;
+            @extend .font-weight-bold;
+          }
+          .btn:hover {
+            color: #3d2000;
+            background-color: #f1ebe4;
+            border-color: #f1ebe4;
+          }
+        }
       }
     }
   }

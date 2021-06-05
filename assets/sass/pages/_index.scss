@@ -16,10 +16,11 @@
   .card-container {
     @include make-row();
     @include row-cols(1);
+    @extend .my-4;
+    @extend .m-0;
     @include media-breakpoint-up(md) {
       @include row-cols(3);
     }
-    @extend .my-4;
     .card-article {
       @include make-col-ready();
       @extend .my-4;

@@ -4,6 +4,7 @@ window.onload = async () => {
   const cart = Cart.getCart();
   cart.updateHeader();
 };
+
 // ADD PRODUCTS TO DOCUMENT
 const createCartPage = async () => {
   // GET LOCALSTORAGE
@@ -15,13 +16,12 @@ const createCartPage = async () => {
     // GET DOM ELEMENT
     const cartItems = document.getElementById("cart-items");
     const newCard = createCard(cartItems, product);
+    const box = newCard.querySelector(".card-box");
+    const cartItemComponent = new CartItemComponent(item, box);
+    const component = cartItemComponent.getComponent();
+    newCard.appendChild(component);
     const desc = newCard.querySelector(".card-box-body-text");
     desc.textContent = "Couleur: " + item.color;
-    const price = newCard.querySelector(".card-box-body-price-text");
-    price.textContent = formatPrice(cart.sumPrices(item));
-    const box = newCard.querySelector(".card-box");
-    createQuantity(box, item, newCard);
-    createRemove(box, item, newCard);
   }
   // GET DOM ELEMENT
   const cartItems = document.getElementById("cart-items");
@@ -37,9 +37,9 @@ const createCartPage = async () => {
 // SHOW SUM INFO
 const updateSumInfo = (e) => {
   const cart = e.detail.cart;
-  const totalItems = document.getElementById("total-items")
+  const totalItems = document.getElementById("total-items");
   totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
-  const totalPrice = document.getElementById("total-price")
+  const totalPrice = document.getElementById("total-price");
   totalPrice.textContent = "Prix total = " + formatPrice(cart.totalPrices(), true);
 };
-document.addEventListener("updateEvent", updateSumInfo)
+document.addEventListener("updateEvent", updateSumInfo);
