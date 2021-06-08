@@ -73,6 +73,7 @@
         }
       }
     }
+
     .back-home {
       @extend .d-flex;
       @extend .mt-3;
@@ -103,11 +104,11 @@
       label {
         color: #22181c;
       }
-      #formButton {
+      #form-button {
         @extend .d-block;
         @extend .m-auto;
       }
-      #formButton:hover {
+      #form-button:hover {
         color: #3d2000;
         background-color: #e8d9d9;
         border-color: #e8d9d9;
