@@ -8371,7 +8371,7 @@ a:hover {
 
 @font-face {
   font-family: "belligerent";
-  src: url("/front-end/assets/webfonts/belligerent-webfont.woff") format("woff");
+  src: url("../webfonts/belligerent-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal; }
 
@@ -8433,12 +8433,12 @@ a:hover {
 
 .jumbotron-img-index {
   height: 400px;
-  background-image: url("/front-end/assets/images/teddy_by_marina_shatskih_index_992px.jpg");
+  background-image: url("../images/teddy_by_marina_shatskih_index_992px.jpg");
   background-position: center; }
 
 @media screen and (min-width: 992px) {
   .jumbotron-img-index {
-    background-image: url("/front-end/assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
+    background-image: url("../images/teddy_by_marina_shatskih_index_1920px.jpg");
     background-position: center 30%;
     background-size: cover; } }
 
@@ -8579,6 +8579,9 @@ a:hover {
               -ms-flex: 0 0 41.66667%;
                   flex: 0 0 41.66667%;
           max-width: 41.66667%;
+          height: 100px;
+          -o-object-fit: cover;
+             object-fit: cover;
           border-radius: 1rem; }
         #cart-main .cart-main-box .card-article .card-box-body {
           -webkit-box-flex: 0;
@@ -8649,7 +8652,7 @@ a:hover {
   padding-left: 15px; }
   #command-container .jumbotron-img-command {
     height: 600px;
-    background-image: url("/front-end/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+    background-image: url("../images/teddy_by_marina_shatskih_command_992px.jpg");
     background-position: center;
     border-radius: 1rem; }
     #command-container .jumbotron-img-command .command p {
@@ -8657,6 +8660,6 @@ a:hover {
       font-size: 1.5rem; }
   @media screen and (min-width: 992px) {
     #command-container .jumbotron-img-command {
-      background-image: url("/front-end/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+      background-image: url("../images/teddy_by_marina_shatskih_command_1920px.jpg");
       background-position: center 30%;
       background-size: cover; } }

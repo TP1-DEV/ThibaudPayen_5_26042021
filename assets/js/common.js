@@ -226,8 +226,8 @@ const formContact = () => {
   const city = formOrder.city.value;
   const email = formOrder.email.value;
 
-  const nameValidation = /^[a-zA-Z]$/;
-  const addressValidation = /^[a-zA-Z0-9 ]$/;
+  const nameValidation = /[a-zA-Z- ]/;
+  const addressValidation = /[a-zA-Z0-9- ]/;
   const emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   const nameIsValid = nameValidation.test(firstName) && nameValidation.test(lastName) && nameValidation.test(city);
