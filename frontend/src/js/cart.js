@@ -1,81 +1,88 @@
 // CLASS CART
 export class Cart {
-  static instance;
-  items;
-  updateEvent;
   constructor() {
-    const cartStorage = localStorage.getItem("cart");
-    this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
-    this.updateEvent = new CustomEvent("updateEvent", {
+    const cartStorage = localStorage.getItem('cart')
+    this.items = cartStorage != null ? JSON.parse(cartStorage) : []
+    this.updateEvent = new CustomEvent('updateEvent', {
       detail: {
         cart: this,
       },
-    });
+    })
   }
+
   static getCart() {
     if (!Cart.instance) {
-      Cart.instance = new Cart();
+      Cart.instance = new Cart()
     }
-    return Cart.instance;
+    return Cart.instance
   }
+
   addItem(id, color, price, quantity = 1) {
     const addCartItem = {
       id: id,
       color: color,
       price: price,
       quantity: quantity,
-    };
+    }
     const existingItem = this.items.find((item) => {
-      return item.id === addCartItem.id && item.color === addCartItem.color;
-    });
+      return item.id === addCartItem.id && item.color === addCartItem.color
+    })
     if (existingItem) {
-      existingItem.quantity++;
+      existingItem.quantity++
     } else {
-      this.items.push(addCartItem);
+      this.items.push(addCartItem)
     }
-    this.update();
+    this.update()
   }
+
   removeItem(id, color) {
-    let index = this.items.findIndex((item) => item.id === id && item.color === color);
+    const index = this.items.findIndex((item) => item.id === id && item.color === color)
     if (index >= 0) {
-      this.items.splice(index, 1);
-      this.update();
+      this.items.splice(index, 1)
+      this.update()
     }
   }
+
   updateItemQty(id, color, quantity) {
-    const item = this.items.find((item) => item.id === id && item.color === color);
-    item.quantity = quantity;
-    this.update();
+    const item = this.items.find((item) => item.id === id && item.color === color)
+    item.quantity = quantity
+    this.update()
   }
+
   itemsQty() {
-    let itemsQty = 0;
+    let itemsQty = 0
     for (const item of this.items) {
-      itemsQty += item.quantity;
+      itemsQty += item.quantity
     }
-    return itemsQty;
+    return itemsQty
   }
+
   totalPrices() {
-    let totalPrices = 0;
+    let totalPrices = 0
     for (const item of this.items) {
-      totalPrices += item.price * item.quantity;
+      totalPrices += item.price * item.quantity
     }
-    return totalPrices;
+    return totalPrices
   }
+
   getItems() {
-    return this.items;
+    return this.items
   }
+
   getItemsId() {
-    let itemsId = [];
+    const itemsId = []
     for (const item of this.items) {
-      itemsId.push(item.id);
+      itemsId.push(item.id)
     }
-    return itemsId;
+    return itemsId
   }
+
   update() {
-    localStorage.setItem("cart", JSON.stringify(this.items));
-    document.dispatchEvent(this.updateEvent);
+    localStorage.setItem('cart', JSON.stringify(this.items))
+    document.dispatchEvent(this.updateEvent)
   }
+
   updateHeader() {
-    document.dispatchEvent(this.updateEvent);
+    document.dispatchEvent(this.updateEvent)
   }
 }
