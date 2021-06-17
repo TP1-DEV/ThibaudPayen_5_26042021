@@ -8371,7 +8371,7 @@ a:hover {
 
 @font-face {
   font-family: "belligerent";
-  src: url("/frontend/assets/webfonts/belligerent-webfont.woff") format("woff");
+  src: url("../assets/webfonts/belligerent-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal; }
 
@@ -8433,12 +8433,12 @@ a:hover {
 
 .jumbotron-img-index {
   height: 400px;
-  background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_index_992px.jpg");
+  background-image: url("../assets/images/teddy_by_marina_shatskih_index_992px.jpg");
   background-position: center; }
 
 @media screen and (min-width: 992px) {
   .jumbotron-img-index {
-    background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
+    background-image: url("../assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
     background-position: center 30%;
     background-size: cover; } }
 
@@ -8623,6 +8623,10 @@ a:hover {
                   flex: 0 0 25%;
           max-width: 25%;
           cursor: pointer; }
+    #cart-main .cart-main-box .back-home {
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content; }
     #cart-main .cart-main-box #summary {
       border-bottom: 2px solid #4e5f6a;
       margin-bottom: 1rem; }
@@ -8652,7 +8656,7 @@ a:hover {
   padding-left: 15px; }
   #command-container .jumbotron-img-command {
     height: 600px;
-    background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+    background-image: url("../assets/images/teddy_by_marina_shatskih_sumorder_992px.jpg");
     background-position: center;
     border-radius: 1rem; }
     #command-container .jumbotron-img-command .command p {
@@ -8660,6 +8664,6 @@ a:hover {
       font-size: 1.5rem; }
   @media screen and (min-width: 992px) {
     #command-container .jumbotron-img-command {
-      background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+      background-image: url("../assets/images/teddy_by_marina_shatskih_sumorder_1920px.jpg");
       background-position: center 30%;
       background-size: cover; } }

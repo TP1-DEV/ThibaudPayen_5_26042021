@@ -3,7 +3,7 @@
   .jumbotron {
     &-img-command {
       height: 600px;
-      background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_command_992px.jpg");
+      background-image: url("../assets/images/teddy_by_marina_shatskih_sumorder_992px.jpg");
       background-position: center;
       border-radius: 1rem;
       .command {
@@ -15,7 +15,7 @@
     }
     @media screen and (min-width: 992px) {
       &-img-command {
-        background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_command_1920px.jpg");
+        background-image: url("../assets/images/teddy_by_marina_shatskih_sumorder_1920px.jpg");
         background-position: center 30%;
         background-size: cover;
       }

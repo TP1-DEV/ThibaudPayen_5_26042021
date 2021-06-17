@@ -1,3 +1,8 @@
+import { Cart } from "./cart";
+import { getData, createElementFactory, createCard } from "./common";
+import { url } from "./url";
+import "../sass/styles.scss"
+
 // EXECUTE ON LOAD
 window.onload = () => {
   addItemsCards();

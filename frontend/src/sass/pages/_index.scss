@@ -1,12 +1,12 @@
 .jumbotron {
   &-img-index {
     height: 400px;
-    background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_index_992px.jpg");
+    background-image: url("../assets/images/teddy_by_marina_shatskih_index_992px.jpg");
     background-position: center;
   }
   @media screen and (min-width: 992px) {
     &-img-index {
-      background-image: url("/frontend/assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
+      background-image: url("../assets/images/teddy_by_marina_shatskih_index_1920px.jpg");
       background-position: center 30%;
       background-size: cover;
     }

@@ -1,3 +1,6 @@
+import { Cart } from "./cart";
+import { createElementFactory, getSearchParams, formatPrice } from "./common"
+
 // EXECUTE ON LOAD
 window.onload = () => {
   sumOrder();

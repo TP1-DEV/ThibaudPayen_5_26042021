@@ -1,5 +1,8 @@
+import { Cart } from "./cart";
+import { url } from "./url";
+
 // GET DATA
-const getData = async (request) => {
+export const getData = async (request) => {
   try {
     const response = await fetch(request);
     if (response.ok) {
@@ -14,18 +17,18 @@ const getData = async (request) => {
 };
 
 // GET URLSEARCHPARAMS
-const getSearchParams = (term) => {
+export const getSearchParams = (term) => {
   const searchParams = new URLSearchParams(window.location.search);
   return searchParams.get(term);
 };
 
 // SPACING NUMBERS
-function numberWithSpaces(number) {
+export function numberWithSpaces(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 // FORMATING PRICE
-const formatPrice = (price, taxes = false) => {
+export const formatPrice = (price, taxes = false) => {
   const priceString = price.toString();
   const centsIndex = priceString.length - 2;
   const centsValue = priceString.substring(centsIndex);
@@ -45,7 +48,7 @@ const formatPrice = (price, taxes = false) => {
 };
 
 // CREATE DOM ELEMENT
-const createElementFactory = (type, attributes, parent) => {
+export const createElementFactory = (type, attributes, parent) => {
   const element = document.createElement(type);
   for (let key in attributes) {
     element.setAttribute(key, attributes[key]);
@@ -57,7 +60,7 @@ const createElementFactory = (type, attributes, parent) => {
 };
 
 // CREATE CARD
-const createCard = (element, items, links = false, prices = false) => {
+export const createCard = (element, items, links = false, prices = false) => {
   const card = createElementFactory("article", { class: "card-article" }, element);
   let box = "";
   if (links) {
@@ -75,7 +78,7 @@ const createCard = (element, items, links = false, prices = false) => {
   const desc = createElementFactory("p", { class: "card-box-body-text" }, body);
   desc.textContent = items.description;
   if (prices) {
-    footer = createElementFactory("div", { class: "card-box-body-price" }, body);
+    const footer = createElementFactory("div", { class: "card-box-body-price" }, body);
     const price = createElementFactory("p", { class: "card-box-body-price-text" }, footer);
     price.textContent = formatPrice(items.price);
   }
@@ -83,7 +86,7 @@ const createCard = (element, items, links = false, prices = false) => {
 };
 
 // BUTTON ADD TO CART
-const buttonAddToCart = (element, item) => {
+export const buttonAddToCart = (element, item) => {
   element.addEventListener("click", () => {
     const cart = Cart.getCart();
     const selectedOption = document.getElementById("inputGroupSelect01").value;
@@ -93,7 +96,7 @@ const buttonAddToCart = (element, item) => {
 };
 
 // CREATE BACK TO HOME
-const createBackToHome = (element) => {
+export const createBackToHome = (element) => {
   const backToHome = createElementFactory("a", { class: "back-home" }, element);
   backToHome.href = "index.html";
   const backArrow = createElementFactory("i", { class: "fas fa-arrow-left" }, backToHome);
@@ -102,7 +105,7 @@ const createBackToHome = (element) => {
 };
 
 // CREATE TOTAL SUMMARY
-const createTotalSummary = (element) => {
+export const createTotalSummary = (element) => {
   const cart = Cart.getCart();
   const totalItems = createElementFactory("div", { id: "total-items" }, element);
   totalItems.textContent = "Nombre d'articles : " + cart.itemsQty();
@@ -111,7 +114,7 @@ const createTotalSummary = (element) => {
 };
 
 // UPDATE HEADER CART QUANTITY
-const updateCartQty = (e) => {
+export const updateCartQty = (e) => {
   const cart = e.detail.cart;
   const cartQtyIcon = document.getElementById("cart-qty");
   if (cart.itemsQty() > 0) {
@@ -124,90 +127,8 @@ const updateCartQty = (e) => {
 };
 document.addEventListener("updateEvent", updateCartQty);
 
-// CLASS CART
-class Cart {
-  static instance;
-  items;
-  updateEvent;
-  constructor() {
-    const cartStorage = localStorage.getItem("cart");
-    this.items = cartStorage != null ? JSON.parse(cartStorage) : [];
-    this.updateEvent = new CustomEvent("updateEvent", {
-      detail: {
-        cart: this,
-      },
-    });
-  }
-  static getCart() {
-    if (!Cart.instance) {
-      Cart.instance = new Cart();
-    }
-    return Cart.instance;
-  }
-  addItem(id, color, price, quantity = 1) {
-    const addCartItem = {
-      id: id,
-      color: color,
-      price: price,
-      quantity: quantity,
-    };
-    const existingItem = this.items.find((item) => {
-      return item.id === addCartItem.id && item.color === addCartItem.color;
-    });
-    if (existingItem) {
-      existingItem.quantity++;
-    } else {
-      this.items.push(addCartItem);
-    }
-    this.update();
-  }
-  removeItem(id, color) {
-    let index = this.items.findIndex((item) => item.id === id && item.color === color);
-    if (index >= 0) {
-      this.items.splice(index, 1);
-      this.update();
-    }
-  }
-  updateItemQty(id, color, quantity) {
-    const item = this.items.find((item) => item.id === id && item.color === color);
-    item.quantity = quantity;
-    this.update();
-  }
-  itemsQty() {
-    let itemsQty = 0;
-    for (const item of this.items) {
-      itemsQty += item.quantity;
-    }
-    return itemsQty;
-  }
-  totalPrices() {
-    let totalPrices = 0;
-    for (const item of this.items) {
-      totalPrices += item.price * item.quantity;
-    }
-    return totalPrices;
-  }
-  getItems() {
-    return this.items;
-  }
-  getItemsId() {
-    let itemsId = [];
-    for (const item of this.items) {
-      itemsId.push(item.id);
-    }
-    return itemsId;
-  }
-  update() {
-    localStorage.setItem("cart", JSON.stringify(this.items));
-    document.dispatchEvent(this.updateEvent);
-  }
-  updateHeader() {
-    document.dispatchEvent(this.updateEvent);
-  }
-}
-
 // CLASS CONTACT
-class Contact {
+export class Contact {
   constructor(firstName, lastName, address, city, email) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -218,7 +139,7 @@ class Contact {
 }
 
 // CREATE NEW FORM CONTACT
-const formContact = () => {
+export const formContact = () => {
   const formOrder = document.forms["form-order"];
   const firstName = formOrder.firstName.value;
   const lastName = formOrder.lastName.value;
@@ -233,6 +154,7 @@ const formContact = () => {
   const nameIsValid = nameValidation.test(firstName) && nameValidation.test(lastName) && nameValidation.test(city);
   const addressIsValid = addressValidation.test(address);
   const emailIsValid = emailValidation.test(email);
+  let contact;
   if (nameIsValid === false || addressIsValid === false || emailIsValid === false) {
     alert("Erreur de saisie");
   } else {
@@ -241,7 +163,7 @@ const formContact = () => {
 };
 
 // BUTTON FORM ORDER
-const buttonFormOrder = (element) => {
+export const buttonFormOrder = (element) => {
   element.addEventListener("click", async (e) => {
     e.preventDefault();
     const orderData = {
@@ -258,8 +180,7 @@ const buttonFormOrder = (element) => {
     });
     const data = await getData(request);
     if (data.orderId) {
-      console.log(data);
-      window.location = "command.html?orderId=" + data.orderId;
+      window.location = "sumorder.html?orderId=" + data.orderId;
     } else {
       console.error(error);
     }

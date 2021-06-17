@@ -79,6 +79,7 @@
     .back-home {
       @extend .d-flex;
       @extend .mt-3;
+      width: fit-content;
       i {
         @extend .pt-1;
       }
