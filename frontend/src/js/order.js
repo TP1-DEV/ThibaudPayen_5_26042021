@@ -1,15 +1,15 @@
 import { Cart } from './cart'
 import * as commonFn from './common'
 import { url } from './url'
-import '../sass/styles.scss'
+import '../sass/pages/order.scss'
 
 // ADD PRODUCTS TO DOCUMENT
 const createCartPage = async () => {
   const cart = Cart.getCart()
   for (const item of cart.getItems()) {
     const product = await commonFn.getData(url + item.id)
-    const cartItems = document.getElementById('cart-items')
-    const newCard = commonFn.createCard(cartItems, product)
+    const orderItems = document.getElementById('order-items')
+    const newCard = commonFn.createCard(orderItems, product)
     const box = newCard.querySelector('.card-box')
     const cartItemComponent = new CartItemComponent(item, box)
     const component = cartItemComponent.getComponent()
@@ -17,8 +17,8 @@ const createCartPage = async () => {
     const desc = newCard.querySelector('.card-box-body-text')
     desc.textContent = 'Couleur: ' + item.color
   }
-  const cartItemsFooter = document.getElementById('cart-items')
-  commonFn.createBackToHome(cartItemsFooter)
+  const orderItemsFooter = document.getElementById('order-items')
+  commonFn.createBackToHome(orderItemsFooter)
   const summary = document.getElementById('summary')
   commonFn.createTotalSummary(summary)
   const buttonForm = document.getElementById('form-button')

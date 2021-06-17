@@ -1,3 +1,14 @@
+@import "../scss/bootstrap";
+
+@import "../base/base";
+@import "../base/typo";
+
+@import "../layout/header";
+@import "../layout/footer";
+
+@import "../components/titles";
+@import "../components/btn";
+
 #product-main {
   .card-container {
     @include make-row();

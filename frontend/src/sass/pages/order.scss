@@ -1,7 +1,18 @@
-#cart-main {
+@import "../scss/bootstrap";
+
+@import "../base/base";
+@import "../base/typo";
+
+@import "../layout/header";
+@import "../layout/footer";
+
+@import "../components/titles";
+@import "../components/btn";
+
+#order-main {
   margin-top: 3rem;
   margin-bottom: 3rem;
-  .cart-main-box {
+  .order-main-box {
     border-radius: 1rem;
     @include make-col-ready();
     .card-article {

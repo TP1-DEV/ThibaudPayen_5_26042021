@@ -1,7 +1,7 @@
 import { Cart } from './cart'
 import * as commonFn from './common'
 import { url } from './url'
-import '../sass/styles.scss'
+import '../sass/pages/product.scss'
 
 // ADD PRODUCT TO DOCUMENT
 const addItemCard = async () => {
