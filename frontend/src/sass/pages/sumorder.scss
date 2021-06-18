@@ -1,19 +1,19 @@
-@import "../scss/bootstrap";
+@import '../scss/bootstrap';
 
-@import "../base/base";
-@import "../base/typo";
+@import '../base/base';
+@import '../base/typo';
 
-@import "../layout/header";
-@import "../layout/footer";
+@import '../layout/header';
+@import '../layout/footer';
 
-@import "../components/titles";
+@import '../components/titles';
 
 #sumorder-container {
   @include make-col-ready();
   .jumbotron {
     &-img-sumorder {
       height: 600px;
-      background-image: url("../../assets/images/teddy_by_marina_shatskih_sumorder_992px.jpg");
+      background-image: url('../../assets/images/teddy_by_marina_shatskih_sumorder_992px.jpg');
       background-position: center;
       border-radius: 1rem;
       .sumorder {
@@ -25,7 +25,7 @@
     }
     @media screen and (min-width: 992px) {
       &-img-sumorder {
-        background-image: url("../../assets/images/teddy_by_marina_shatskih_sumorder_1920px.jpg");
+        background-image: url('../../assets/images/teddy_by_marina_shatskih_sumorder_1920px.jpg');
         background-position: center 30%;
         background-size: cover;
       }

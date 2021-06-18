@@ -172,7 +172,7 @@ export const buttonFormOrder = (element) => {
     const request = new Request(url + 'order', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(orderData),
@@ -181,7 +181,7 @@ export const buttonFormOrder = (element) => {
     if (data.orderId) {
       window.location = 'sumorder.html?orderId=' + data.orderId
     } else {
-      console.error("Erreur serveur")
+      console.error('Erreur serveur')
     }
   })
 }
