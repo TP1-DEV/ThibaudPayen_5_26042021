@@ -1,6 +1,6 @@
-import { Cart } from './cart'
-import { getData, createElementFactory, createCard } from './common'
-import { url } from './url'
+import {Cart} from './cart'
+import {getData, createElementFactory, createCard} from './common'
+import {url} from './url'
 import '../sass/pages/index.scss'
 
 // ADD PRODUCTS TO DOCUMENT

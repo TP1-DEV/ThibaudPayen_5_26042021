@@ -1,6 +1,6 @@
-import { Cart } from './cart'
+import {Cart} from './cart'
 import * as commonFn from './common'
-import { url } from './url'
+import {url} from './url'
 import '../sass/pages/order.scss'
 
 // ADD PRODUCTS TO DOCUMENT
@@ -21,8 +21,8 @@ const createCartPage = async () => {
   commonFn.createBackToHome(orderItemsFooter)
   const summary = document.getElementById('summary')
   commonFn.createTotalSummary(summary)
-  const buttonForm = document.getElementById('form-button')
-  commonFn.buttonFormOrder(buttonForm)
+  const form = document.getElementById('form-order')
+  commonFn.formOrder(form)
 }
 
 // SHOW SUM INFO

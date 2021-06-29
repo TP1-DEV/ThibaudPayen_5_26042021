@@ -22,7 +22,7 @@ export class Cart {
       id: id,
       color: color,
       price: price,
-      quantity: quantity,
+      quantity: quantity
     }
     const existingItem = this.items.find((item) => {
       return item.id === addCartItem.id && item.color === addCartItem.color

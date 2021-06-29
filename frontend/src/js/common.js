@@ -1,5 +1,5 @@
-import { Cart } from './cart'
-import { url } from './url'
+import {Cart} from './cart'
+import {url} from './url'
 
 // GET DATA
 export const getData = async (request) => {
@@ -15,12 +15,6 @@ export const getData = async (request) => {
   }
 }
 
-// GET URLSEARCHPARAMS
-export const getSearchParams = (term) => {
-  const searchParams = new URLSearchParams(window.location.search)
-  return searchParams.get(term)
-}
-
 // SPACING NUMBERS
 export function numberWithSpaces(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
@@ -33,9 +27,6 @@ export const formatPrice = (price, taxes = false) => {
   const centsValue = priceString.substring(centsIndex)
   const integerValue = priceString.substring(0, centsIndex)
   let formatedPrice = integerValue
-  if (priceString === '0') {
-    formatedPrice = 0
-  }
   if (centsValue !== '00' && priceString !== '0') {
     formatedPrice += `,${centsValue}`
   }
@@ -59,26 +50,26 @@ export const createElementFactory = (type, attributes, parent) => {
 }
 
 // CREATE CARD
-export const createCard = (element, items, links = false, prices = false) => {
-  const card = createElementFactory('article', { class: 'card-article' }, element)
+export const createCard = (parent, items, links = false, prices = false) => {
+  const card = createElementFactory('article', {class: 'card-article'}, parent)
   let box = ''
   if (links) {
-    const link = createElementFactory('a', { class: 'card-article-link' }, card)
+    const link = createElementFactory('a', {class: 'card-article-link'}, card)
     link.href = 'product.html?id=' + items._id
-    box = createElementFactory('div', { class: 'card-box' }, link)
+    box = createElementFactory('div', {class: 'card-box'}, link)
   } else {
-    box = createElementFactory('div', { class: 'card-box' }, card)
+    box = createElementFactory('div', {class: 'card-box'}, card)
   }
-  const img = createElementFactory('img', { class: 'card-box-img' }, box)
+  const img = createElementFactory('img', {class: 'card-box-img'}, box)
   img.src = items.imageUrl
-  const body = createElementFactory('div', { class: 'card-box-body' }, box)
-  const title = createElementFactory('h5', { class: 'card-box-body-title' }, body)
+  const body = createElementFactory('div', {class: 'card-box-body'}, box)
+  const title = createElementFactory('h5', {class: 'card-box-body-title'}, body)
   title.textContent = items.name
-  const desc = createElementFactory('p', { class: 'card-box-body-text' }, body)
+  const desc = createElementFactory('p', {class: 'card-box-body-text'}, body)
   desc.textContent = items.description
   if (prices) {
-    const footer = createElementFactory('div', { class: 'card-box-body-price' }, body)
-    const price = createElementFactory('p', { class: 'card-box-body-price-text' }, footer)
+    const footer = createElementFactory('div', {class: 'card-box-body-price'}, body)
+    const price = createElementFactory('p', {class: 'card-box-body-price-text'}, footer)
     price.textContent = formatPrice(items.price)
   }
   return card
@@ -95,20 +86,21 @@ export const buttonAddToCart = (element, item) => {
 }
 
 // CREATE BACK TO HOME
-export const createBackToHome = (element) => {
-  const backToHome = createElementFactory('a', { class: 'back-home' }, element)
+export const createBackToHome = (parent) => {
+  const backToHome = createElementFactory('a', {class: 'back-home'}, parent)
   backToHome.href = 'index.html'
-  createElementFactory('i', { class: 'fas fa-arrow-left' }, backToHome)
-  const textBackArrow = createElementFactory('span', { class: 'font-weight-bold' }, backToHome)
+  createElementFactory('i', {class: 'fas fa-arrow-left'}, backToHome)
+  const textBackArrow = createElementFactory('span', {class: 'font-weight-bold'}, backToHome)
   textBackArrow.textContent = "Retour à l'acceuil"
+  return backToHome
 }
 
 // CREATE TOTAL SUMMARY
 export const createTotalSummary = (element) => {
   const cart = Cart.getCart()
-  const totalItems = createElementFactory('div', { id: 'total-items' }, element)
+  const totalItems = createElementFactory('div', {id: 'total-items'}, element)
   totalItems.textContent = `Nombre d'articles : ${cart.itemsQty()}`
-  const totalPrice = createElementFactory('div', { id: 'total-price' }, element)
+  const totalPrice = createElementFactory('div', {id: 'total-price'}, element)
   totalPrice.textContent = `Prix total = ${formatPrice(cart.totalPrices(), true)}`
 }
 
@@ -140,30 +132,18 @@ export class Contact {
 // CREATE NEW FORM CONTACT
 export const formContact = () => {
   const formOrder = document.forms['form-order']
-  const firstName = formOrder.firstName.value
-  const lastName = formOrder.lastName.value
-  const address = formOrder.address.value
-  const city = formOrder.city.value
-  const email = formOrder.email.value
+  const firstName = formOrder.elements.firstName.value
+  const lastName = formOrder.elements.lastName.value
+  const address = formOrder.elements.address.value
+  const city = formOrder.elements.city.value
+  const email = formOrder.elements.email.value
 
-  const nameValidation = /[a-zA-Z- ]/
-  const addressValidation = /[a-zA-Z0-9- ]/
-  // eslint-disable-next-line no-useless-escape
-  const emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-
-  const nameIsValid = nameValidation.test(firstName) && nameValidation.test(lastName) && nameValidation.test(city)
-  const addressIsValid = addressValidation.test(address)
-  const emailIsValid = emailValidation.test(email)
-  if (nameIsValid === false || addressIsValid === false || emailIsValid === false) {
-    alert('Erreur de saisie')
-  } else {
-    return new Contact(firstName, lastName, address, city, email)
-  }
+  return new Contact(firstName, lastName, address, city, email)
 }
 
 // BUTTON FORM ORDER
-export const buttonFormOrder = (element) => {
-  element.addEventListener('click', async (e) => {
+export const formOrder = (element) => {
+  element.addEventListener('submit', async (e) => {
     e.preventDefault()
     const orderData = {
       contact: formContact(),
@@ -172,7 +152,7 @@ export const buttonFormOrder = (element) => {
     const request = new Request(url + 'order', {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(orderData),
