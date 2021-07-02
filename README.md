@@ -11,7 +11,7 @@ Projet 5 du parcours développeur web Openclassrooms : "Construisez un site e-co
 - Cloner le repo.
 - Depuis le répertoire /backend, exécuter `npm install` puis exécuter `node server`. Le serveur doit démarrer sur http://localhost:3000 par défaut. Si le serveur doit démarrer sur un autre port pour n'importe quelle raison, le port sera mentionné dans la console.
 - Depuis le répertoire /frontend, exécuter `npm install` puis exécuter `npm run build` pour générer les fichiers nécessaires.
-- Enfin, vous pouvez afficher le fichier index.html pour naviguer sur le site web.
+- Enfin, le serveur web doit être lancé depuis la racine du repo et vous devrez atteindre le chemin <http://localhost:votre_port/frontend/src/html/index.html>.
 
 ## Tests unitaires
 

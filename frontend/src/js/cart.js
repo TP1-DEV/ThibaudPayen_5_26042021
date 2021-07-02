@@ -8,6 +8,7 @@ export class Cart {
         cart: this,
       },
     })
+    this.dispatchUpdate()
   }
 
   static getCart() {
@@ -22,7 +23,7 @@ export class Cart {
       id: id,
       color: color,
       price: price,
-      quantity: quantity
+      quantity: quantity,
     }
     const existingItem = this.items.find((item) => {
       return item.id === addCartItem.id && item.color === addCartItem.color
@@ -79,10 +80,10 @@ export class Cart {
 
   update() {
     localStorage.setItem('cart', JSON.stringify(this.items))
-    document.dispatchEvent(this.updateEvent)
+    this.dispatchUpdate()
   }
 
-  updateHeader() {
+  dispatchUpdate() {
     document.dispatchEvent(this.updateEvent)
   }
 }

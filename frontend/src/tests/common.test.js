@@ -55,7 +55,7 @@ describe('createCard', () => {
 describe('buttonAddToCart', () => {
   test('it should add item to cart in the localstorage on button click', () => {
     localStorage.clear()
-    const cart = Cart.instance = new Cart()
+    const cart = (Cart.instance = new Cart())
     const item = {
       _id: 123,
       name: 'Teddy',
@@ -88,9 +88,10 @@ describe('createTotalSummary', () => {
     const parent = document.querySelector('div')
     commonFn.createTotalSummary(parent)
     expect(parent.outerHTML).toEqual(`<div><div id="total-items">Nombre d'articles : ${cart.itemsQty()}</div><div id="total-price">Prix total = ${commonFn.formatPrice(cart.totalPrices(), true)}</div></div>`)
+    document.removeEventListener('updateEvent', commonFn.updateSumInfo)
   })
 })
-describe('updateCartQty', () => {
+describe('initCommon', () => {
   test('it should update cartQtyIcon when adding or removing items', () => {
     localStorage.clear()
     const cart = Cart.instance = new Cart()
@@ -106,10 +107,11 @@ describe('updateCartQty', () => {
     commonFn.createElementFactory('div', {id: 'cart-qty'}, parent)
     const cartQtyIcon = document.getElementById('cart-qty')
     cart.addItem(item._id, item.color, item.price)
-    expect((cartQtyIcon.textContent)).toEqual('1')
+    commonFn.initCommon()
+    expect(cartQtyIcon.textContent).toEqual('1')
     cart.removeItem(item._id, item.color)
     expect(cartQtyIcon.classList.contains).not.toEqual('cart-qty')
-    expect((cartQtyIcon.textContent)).toEqual('')
+    expect(cartQtyIcon.textContent).toEqual('')
   })
 })
 describe('Contact', () => {
@@ -126,14 +128,14 @@ describe('Contact', () => {
 })
 describe('formContact', () => {
   test('it should return a contact object with proper values', () => {
-  document.body.innerHTML = '<div></div>'
-  const parent = document.querySelector('div')
-  const formOrder = commonFn.createElementFactory('form', {id: 'form-order'}, parent)
-  commonFn.createElementFactory('input', {name: 'firstName', value: 'John'},formOrder)
-  commonFn.createElementFactory('input', {name: 'lastName', value: 'DOE'},formOrder)
-  commonFn.createElementFactory('input', {name: 'address', value: '555 Main street'},formOrder)
-  commonFn.createElementFactory('input', {name: 'city', value: 'New-York'},formOrder)
-  commonFn.createElementFactory('input', {name: 'email', value: 'j.doe@email.com'},formOrder)
-  expect(commonFn.formContact()).toEqual({firstName: 'John', lastName: 'DOE', address: '555 Main street', city: 'New-York', email: 'j.doe@email.com'})
+    document.body.innerHTML = '<div></div>'
+    const parent = document.querySelector('div')
+    const formOrder = commonFn.createElementFactory('form', {id: 'form-order'}, parent)
+    commonFn.createElementFactory('input', {name: 'firstName', value: 'John'}, formOrder)
+    commonFn.createElementFactory('input', {name: 'lastName', value: 'DOE'}, formOrder)
+    commonFn.createElementFactory('input', {name: 'address', value: '555 Main street'}, formOrder)
+    commonFn.createElementFactory('input', {name: 'city', value: 'New-York'}, formOrder)
+    commonFn.createElementFactory('input', {name: 'email', value: 'j.doe@email.com'}, formOrder)
+    expect(commonFn.formContact()).toEqual({firstName: 'John', lastName: 'DOE', address: '555 Main street', city: 'New-York', email: 'j.doe@email.com'})
   })
 })

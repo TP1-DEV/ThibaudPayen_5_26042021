@@ -1,4 +1,3 @@
-import {Cart} from './cart'
 import * as commonFn from './common'
 import {url} from './url'
 import '../sass/pages/product.scss'
@@ -35,6 +34,5 @@ const createColorOptions = (element1, element2, items) => {
 // EXECUTE ON LOAD
 window.onload = () => {
   addItemCard()
-  const cart = Cart.getCart()
-  cart.updateHeader()
+  commonFn.initCommon()
 }

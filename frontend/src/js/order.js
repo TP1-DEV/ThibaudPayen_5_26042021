@@ -25,16 +25,6 @@ const createCartPage = async () => {
   commonFn.formOrder(form)
 }
 
-// SHOW SUM INFO
-const updateSumInfo = (e) => {
-  const cart = e.detail.cart
-  const totalItems = document.getElementById('total-items')
-  totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
-  const totalPrice = document.getElementById('total-price')
-  totalPrice.textContent = 'Prix total = ' + commonFn.formatPrice(cart.totalPrices(), true)
-}
-document.addEventListener('updateEvent', updateSumInfo)
-
 // CLASS CARTITEMCOMPONENT
 class CartItemComponent {
   constructor(item, id) {
@@ -51,11 +41,11 @@ class CartItemComponent {
   }
 
   createQuantity() {
-    const quantity = commonFn.createElementFactory('div', { class: 'card-component-quantity' })
-    const down = commonFn.createElementFactory('span', { class: 'down' }, quantity)
+    const quantity = commonFn.createElementFactory('div', {class: 'card-component-quantity'})
+    const down = commonFn.createElementFactory('span', {class: 'down'}, quantity)
     down.textContent = '-'
-    this.quantityNumber = commonFn.createElementFactory('input', { type: 'text', value: this.item.quantity }, quantity)
-    const up = commonFn.createElementFactory('span', { class: 'up' }, quantity)
+    this.quantityNumber = commonFn.createElementFactory('input', {type: 'text', value: this.item.quantity}, quantity)
+    const up = commonFn.createElementFactory('span', {class: 'up'}, quantity)
     up.textContent = '+'
     up.addEventListener('click', () => {
       const input = up.previousElementSibling
@@ -83,14 +73,14 @@ class CartItemComponent {
   }
 
   createSumPrice() {
-    const sumPrice = commonFn.createElementFactory('p', { class: 'card-component-price' })
+    const sumPrice = commonFn.createElementFactory('p', {class: 'card-component-price'})
     sumPrice.textContent = commonFn.formatPrice(this.item.quantity * this.item.price)
     return sumPrice
   }
 
   createRemove() {
-    const remove = commonFn.createElementFactory('div', { class: 'card-component-remove' })
-    commonFn.createElementFactory('i', { class: 'fas fa-trash' }, remove)
+    const remove = commonFn.createElementFactory('div', {class: 'card-component-remove'})
+    commonFn.createElementFactory('i', {class: 'fas fa-trash'}, remove)
     remove.addEventListener('click', () => {
       this.removeItem()
     })
@@ -98,7 +88,7 @@ class CartItemComponent {
   }
 
   createCartItemComponent() {
-    const cardComponent = commonFn.createElementFactory('div', { class: 'card-component' })
+    const cardComponent = commonFn.createElementFactory('div', {class: 'card-component'})
     cardComponent.appendChild(this.quantityComponent)
     cardComponent.appendChild(this.sumPriceComponent)
     cardComponent.appendChild(this.removeComponent)
@@ -120,6 +110,5 @@ class CartItemComponent {
 // EXECUTE ON LOAD
 window.onload = async () => {
   await createCartPage()
-  const cart = Cart.getCart()
-  cart.updateHeader()
+  commonFn.initCommon()
 }

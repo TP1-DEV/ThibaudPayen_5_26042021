@@ -102,21 +102,33 @@ export const createTotalSummary = (element) => {
   totalItems.textContent = `Nombre d'articles : ${cart.itemsQty()}`
   const totalPrice = createElementFactory('div', {id: 'total-price'}, element)
   totalPrice.textContent = `Prix total = ${formatPrice(cart.totalPrices(), true)}`
+  document.addEventListener('updateEvent', updateSumInfo)
+}
+
+// EXPORT FOR TEST
+export const updateSumInfo = (e) => {
+  const cart = e.detail.cart
+  const totalItems = document.getElementById('total-items')
+  totalItems.textContent = "Nombre d'articles : " + cart.itemsQty()
+  const totalPrice = document.getElementById('total-price')
+  totalPrice.textContent = 'Prix total = ' + formatPrice(cart.totalPrices(), true)
 }
 
 // UPDATE HEADER CART QUANTITY
-export const updateCartQty = (e) => {
-  const cart = e.detail.cart
-  const cartQtyIcon = document.getElementById('cart-qty')
-  if (cart.itemsQty() > 0) {
-    cartQtyIcon.classList.add('cart-qty')
-    cartQtyIcon.textContent = cart.itemsQty()
-  } else {
-    cartQtyIcon.classList.remove('cart-qty')
-    cartQtyIcon.textContent = ''
-  }
+export const initCommon = () => {
+  document.addEventListener('updateEvent', (e) => {
+    const cart = e.detail.cart
+    const cartQtyIcon = document.getElementById('cart-qty')
+    if (cart.itemsQty() > 0) {
+      cartQtyIcon.classList.add('cart-qty')
+      cartQtyIcon.textContent = cart.itemsQty()
+    } else {
+      cartQtyIcon.classList.remove('cart-qty')
+      cartQtyIcon.textContent = ''
+    }
+  })
+  Cart.getCart().dispatchUpdate()
 }
-document.addEventListener('updateEvent', updateCartQty)
 
 // CLASS CONTACT
 export class Contact {

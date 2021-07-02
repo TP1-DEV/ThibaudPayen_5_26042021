@@ -7,11 +7,11 @@ const createSumOrder = () => {
   const cart = Cart.getCart()
   const searchParams = new URLSearchParams(window.location.search)
   const sumOrder = document.getElementById('sumorder')
-  const totalQuantity = createElementFactory('p', { class: 'font-weight-bold' }, sumOrder)
+  const totalQuantity = createElementFactory('p', {class: 'font-weight-bold'}, sumOrder)
   totalQuantity.textContent = `Quantité d'articles : ${cart.itemsQty()}`
-  const totalPrice = createElementFactory('p', { class: 'font-weight-bold' }, sumOrder)
+  const totalPrice = createElementFactory('p', {class: 'font-weight-bold'}, sumOrder)
   totalPrice.textContent = `Prix total : ${formatPrice(cart.totalPrices(), true)}`
-  const orderId = createElementFactory('p', { class: 'font-weight-bold' }, sumOrder)
+  const orderId = createElementFactory('p', {class: 'font-weight-bold'}, sumOrder)
   orderId.textContent = `Commande n° : ${searchParams.get('orderId')}`
 }
 
